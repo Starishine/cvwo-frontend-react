@@ -16,10 +16,12 @@ export default function SigninPage() {
             return;
         }
         try {
+            const token = localStorage.getItem('token');
             const response = await fetch('http://localhost:8080/auth/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ username: username.trim(), password: password.trim() }),
             });
@@ -28,7 +30,9 @@ export default function SigninPage() {
                 setError(data.error || data.message);
             }
             else {
-                alert('Login successful!');
+                localStorage.setItem('token', data.token);
+                alert('Login successful!')
+                window.location.href = '/dashboard';
                 setUsername('');
                 setPassword('');
             }
