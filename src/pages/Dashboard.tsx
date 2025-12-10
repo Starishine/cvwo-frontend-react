@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { jwtDecode } from "jwt-decode";
-import { Link } from "react-router-dom";
 import Topics from "../components/Topics";
+import Header from "../components/Header";
 
 export default function Dashboard() {
     const [username, setUsername] = useState('');
@@ -41,53 +41,7 @@ export default function Dashboard() {
             width: '85vw',
             overflow: 'hidden',
         }}>
-            <header style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '12px 20px',
-                borderBottom: '1px solid rgba(0,0,0,0.08)',
-                background: '#fff',
-                height: '64px',
-                flexShrink: 0
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 8,
-                        background: '#111827',
-                        color: '#fff',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontWeight: 700,
-                        fontSize: 18
-                    }}>
-                        R
-                    </div>
-                    <div style={{ fontWeight: 700, fontSize: 18 }}>eadIT</div>
-                </div>
-
-                <nav style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                    <Link to="/post" style={{ textDecoration: 'none', color: '#111827', padding: '8px 12px', borderRadius: 8 }}>
-                        Post
-                    </Link>
-                    <button
-                        onClick={handleLogout}
-                        style={{
-                            background: '#ef4444',
-                            color: '#fff',
-                            border: 'none',
-                            padding: '8px 12px',
-                            borderRadius: 8,
-                            cursor: 'pointer'
-                        }}
-                    >
-                        Logout
-                    </button>
-                </nav>
-            </header>
+            <Header onLogout={handleLogout} />
 
             {/* fixd full width */}
             <div style={{
