@@ -5,6 +5,7 @@ import SigninPage from './pages/SigninPage'
 import Dashboard from './pages/Dashboard'
 import AddPost from './pages/AddPost'
 import YourPosts from './pages/YourPosts'
+import PostByTopic from './pages/PostByTopic'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/add-post" element={<AddPost />} />
           <Route path="/your-posts" element={<YourPosts />} />
+          <Route path="/topic/:topic" element={<PostByTopic />} />
         </Routes>
       </BrowserRouter>
     </>
