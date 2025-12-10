@@ -32,6 +32,9 @@ export default function Header({ onLogout }: { onLogout?: () => void }) {
                 <a href="/add-post" style={{ textDecoration: 'none', color: '#111827', padding: '8px 12px', borderRadius: 8 }}>
                     New Post
                 </a>
+                <a href="/your-posts" style={{ textDecoration: 'none', color: '#111827', padding: '8px 12px', borderRadius: 8 }}>
+                    Your Posts
+                </a>
                 <button
                     onClick={onLogout}
                     style={{

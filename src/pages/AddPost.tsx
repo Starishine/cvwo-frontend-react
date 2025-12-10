@@ -11,6 +11,7 @@ export default function AddPost() {
     const [topic, setTopic] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const defaultTopics = ['Technology', 'Health', 'Science', 'Travel', 'Education', 'Entertainment', 'Sports', 'Business'];
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -107,13 +108,39 @@ export default function AddPost() {
                     <h2>Add a new post</h2>
                     <p style={{ color: '#6b7280' }}>Logged in as {username || 'guest'}</p>
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 720 }}>
-                        <input
-                            type="text"
+                        <select
                             value={topic}
-                            onChange={e => { setTopic(e.target.value) }} required
-                            placeholder="Topic"
-                            style={{ padding: 10, borderRadius: 8, border: '1px solid #e5e7eb' }}
-                        />
+                            onChange={e => setTopic(e.target.value)}
+                            style={{
+                                width: '100%',
+                                padding: 10,
+                                borderRadius: 8,
+                                border: '1px solid #e5e7eb',
+                                fontFamily: 'inherit',
+                                fontSize: 14
+                            }}
+                        >
+                            <option value="">Select a topic...</option>
+                            {defaultTopics.map(t => (
+                                <option key={t} value={t}>{t}</option>
+                            ))}
+                            <option value="__custom__">+ Add custom topic</option>
+                        </select>
+                        {topic === '__custom__' && (
+                            <input
+                                type="text"
+                                placeholder="Enter custom topic"
+                                onChange={e => setTopic(e.target.value)}
+                                style={{
+                                    width: '100%',
+                                    padding: 10,
+                                    borderRadius: 8,
+                                    border: '1px solid #e5e7eb',
+                                    marginTop: 8,
+                                    fontFamily: 'inherit'
+                                }}
+                            />
+                        )}
                         <input
                             type="text"
                             value={title}
