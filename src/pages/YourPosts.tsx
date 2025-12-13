@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { jwtDecode } from "jwt-decode";
 import Topics from "../components/Topics";
 import Header from "../components/Header";
+import DeletePost from "../components/DeletePost";
 
 
 export default function YourPosts() {
@@ -13,6 +14,10 @@ export default function YourPosts() {
     function handleLogout() {
         localStorage.removeItem('token');
         window.location.href = '/';
+    }
+
+    function viewPost(postId: string) {
+        window.location.href = `/post/id/${postId}`;
     }
 
     useEffect(() => {
@@ -110,7 +115,7 @@ export default function YourPosts() {
                         marginBottom: 32,
                     }}>
                         {posts.map(p => (
-                            <article key={p.id} style={{
+                            <article key={p.ID} style={{
                                 display: 'flex',
                                 flexDirection: 'row',
                                 gap: 16,
@@ -140,7 +145,7 @@ export default function YourPosts() {
                                     </p>
 
                                     <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-                                        <button style={{
+                                        <button onClick={() => viewPost(p.ID)} style={{
                                             background: '#2563eb', color: '#fff', border: 'none',
                                             padding: '6px 10px', borderRadius: 8, cursor: 'pointer'
                                         }}>View More</button>

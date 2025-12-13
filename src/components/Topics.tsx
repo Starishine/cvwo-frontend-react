@@ -7,7 +7,7 @@ export default function Topics() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchPosts = async () => {
+        const fetchTopics = async () => {
             try {
                 const res = await fetch(`http://localhost:8080/post/topics`);
                 const data = await res.json();
@@ -25,7 +25,7 @@ export default function Topics() {
                 setLoading(false);
             }
         };
-        fetchPosts();
+        fetchTopics();
     }, []);
 
     return (

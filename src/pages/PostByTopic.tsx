@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Topics from '../components/Topics';
 import Header from '../components/Header';
+import { Link } from 'react-router-dom';
 
 
 export default function PostByTopic() {
@@ -14,6 +15,10 @@ export default function PostByTopic() {
     function handleLogout() {
         localStorage.removeItem('token');
         window.location.href = '/';
+    }
+
+    function viewPost(postId: string) {
+        window.location.href = `/post/id/${postId}`;
     }
 
     useEffect(() => {
@@ -82,7 +87,7 @@ export default function PostByTopic() {
                         marginBottom: 32,
                     }}>
                         {posts.map(p => (
-                            <article key={p.id} style={{
+                            <article key={p.ID} style={{
                                 display: 'flex',
                                 flexDirection: 'row',
                                 gap: 16,
@@ -114,7 +119,7 @@ export default function PostByTopic() {
                                     <div style={{ fontSize: 12, color: '#111823' }}>By {p.author || 'Unknown'}</div>
 
                                     <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-                                        <button style={{
+                                        <button onClick={() => viewPost(p.ID)} style={{
                                             background: '#2563eb', color: '#fff', border: 'none',
                                             padding: '6px 10px', borderRadius: 8, cursor: 'pointer'
                                         }}>View More</button>
