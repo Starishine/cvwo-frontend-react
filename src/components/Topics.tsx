@@ -1,5 +1,32 @@
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
+
 export default function Topics() {
-    const topics = ['Technology', 'Health', 'Science', 'Art', 'Travel'];
+    const [topics, setTopics] = useState<Array<string>>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchTopics = async () => {
+            try {
+                const res = await fetch(`http://localhost:8080/post/topics`);
+                const data = await res.json();
+
+                if (!res.ok) {
+                    setError(data.error || data.message);
+                }
+                else {
+                    console.log("Fetched topics:", data);
+                    setTopics(data || []);
+                }
+            } catch (err: any) {
+                setError(err.message || 'An unexpected error occurred');
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchTopics();
+    }, []);
 
     return (
         <aside style={{
@@ -19,26 +46,27 @@ export default function Topics() {
                 Topics
             </div>
 
+            {loading && <div style={{ padding: '0 1rem' }}>Loading topics...</div>}
+            {error && <div style={{ padding: '0 1rem', color: 'red' }}>{error}</div>}
+
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {topics.map((topic) => (
                     <li key={topic}>
-                        <button
+                        <Link
+                            to={`/topic/${encodeURIComponent(topic)}`}
                             style={{
+                                display: 'block',
                                 width: '100%',
                                 textAlign: 'left',
                                 padding: '10px 1rem',
-                                border: 'none',
-                                background: 'transparent',
-                                cursor: 'pointer',
+                                textDecoration: 'none',
                                 color: '#6b7280',
                                 fontSize: 14,
-                                transition: 'all 0.2s',
+                                transition: 'background .15s',
                             }}
-                            onMouseEnter={(e) => e.currentTarget.style.background = '#e2e8f0'}
-                            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                         >
                             {topic}
-                        </button>
+                        </Link>
                     </li>
                 ))}
             </ul>

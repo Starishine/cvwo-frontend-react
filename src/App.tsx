@@ -5,6 +5,9 @@ import SigninPage from './pages/SigninPage'
 import Dashboard from './pages/Dashboard'
 import AddPost from './pages/AddPost'
 import YourPosts from './pages/YourPosts'
+import PostByTopic from './pages/PostByTopic'
+import { ViewPost } from './pages/ViewPost'
+import DeletePost from './components/DeletePost'
 
 function App() {
 
@@ -17,6 +20,8 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/add-post" element={<AddPost />} />
           <Route path="/your-posts" element={<YourPosts />} />
+          <Route path="/topic/:topic" element={<PostByTopic />} />
+          <Route path="/post/id/:id" element={<ViewPost />} />
         </Routes>
       </BrowserRouter>
     </>

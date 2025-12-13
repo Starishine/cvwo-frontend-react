@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react"
-import { jwtDecode } from "jwt-decode";
-import Topics from "../components/Topics";
-import Header from "../components/Header";
-import DeletePost from "../components/DeletePost";
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Topics from '../components/Topics';
+import Header from '../components/Header';
+import { Link } from 'react-router-dom';
 
 
-export default function YourPosts() {
-    const [username, setUsername] = useState('');
+export default function PostByTopic() {
+    const { topic } = useParams<{ topic: string }>();
+    const decodedTopic = topic ? decodeURIComponent(topic) : '';
+    const [posts, setPosts] = useState<Array<any>>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [posts, setPosts] = useState<Array<any>>([]);
 
     function handleLogout() {
         localStorage.removeItem('token');
@@ -21,49 +22,20 @@ export default function YourPosts() {
     }
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            window.location.href = '/';
-            return;
-        }
-
-        try {
-            const decoded = jwtDecode<any>(token);
-            const username = decoded.sub;
-            console.log("Username from token:", username);
-            setUsername(username);
-        } catch (error) {
-            console.error("Failed to decode token", error);
-            window.location.href = '/';
-            localStorage.removeItem('token');
-        }
-
-    }, []);
-
-    useEffect(() => {
-        if (!username) return;
+        if (!decodedTopic) return;
         const fetchPosts = async () => {
+            setLoading(true);
+            setError(null);
             try {
-                const token = localStorage.getItem('token');
-                const res = await fetch(`http://localhost:8080/post/${username}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                const data = await res.json();
-                console.log("Fetched posts response:", data);
+                const res = await fetch(`http://localhost:8080/post/topic/${encodeURIComponent(decodedTopic)}`);
+                const data = await res.json().catch(() => ([]));
 
                 if (!res.ok) {
-                    setError(data.error || data.message);
+                    setError(data.error || data.message || 'Failed to load posts');
+                    setPosts([]);
+                } else {
+                    setPosts(data);
                 }
-                else {
-                    console.log("Fetched posts:", data);
-                    setPosts(data || []);
-                }
-
             } catch (err: any) {
                 setError(err.message || 'An unexpected error occurred');
             } finally {
@@ -71,7 +43,7 @@ export default function YourPosts() {
             }
         };
         fetchPosts();
-    }, [username]);
+    }, [decodedTopic]);
 
     return (
         <div style={{
@@ -99,13 +71,13 @@ export default function YourPosts() {
                     height: '100%',
                     overflowY: 'auto'
                 }}>
-                    <h2>Your published posts</h2>
+                    <h2>Posts on {decodedTopic}</h2>
 
                     {loading && <div style={{ color: '#6b7280' }}>Loading posts…</div>}
                     {error && <div style={{ color: 'red' }}>{error}</div>}
 
                     {!loading && !error && posts.length === 0 && (
-                        <div style={{ color: '#6b7280' }}>You have no posts yet.</div>
+                        <div style={{ color: '#6b7280' }}>There are no posts yet.</div>
                     )}
                     <section style={{
                         display: 'grid',
@@ -129,6 +101,7 @@ export default function YourPosts() {
 
                                 <div style={{ fontSize: 13, color: '#6b7280', marginBottom: 6 }}>{p.topic}</div>
                                 <div style={{ fontSize: 12, color: '#111823ff' }}>{p.CreatedAt ? new Date(p.CreatedAt).toLocaleDateString() : ''}</div>
+
                                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
                                     <h3 style={{ margin: 0 }}>{p.title}</h3>
                                     <p
@@ -143,6 +116,7 @@ export default function YourPosts() {
                                     >
                                         {p.content.length > 350 ? p.content.slice(0, 350) + '…' : p.content}
                                     </p>
+                                    <div style={{ fontSize: 12, color: '#111823' }}>By {p.author || 'Unknown'}</div>
 
                                     <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
                                         <button onClick={() => viewPost(p.ID)} style={{
@@ -158,6 +132,4 @@ export default function YourPosts() {
             </div>
         </div>
     );
-
-
 }
