@@ -122,7 +122,7 @@ export function ViewPost() {
                                 <div style={{ fontSize: 13, color: '#6b7280' }}>{post.topic}</div>
                                 <div style={{ flex: 1 }}>
                                     <h1 style={{ margin: 0 }}>{post.title}</h1>
-                                    <p style={{ color: '#6b7280', marginTop: 8, whiteSpace: 'pre-wrap' }}>{post.content}</p>
+                                    <p style={{ color: '#6b7280', marginTop: 8, whiteSpace: 'pre-wrap', overflowWrap: 'break-word', wordBreak: 'break-word' }}>{post.content}</p>
                                 </div>
                             </div>
                             <div>
