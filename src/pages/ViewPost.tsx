@@ -4,18 +4,52 @@ import Topics from '../components/Topics';
 import Header from '../components/Header';
 import DeletePost from '../components/DeletePost';
 import { jwtDecode } from 'jwt-decode';
+import AddComment from '../components/AddComment';
+import CommentsList from '../components/CommentList';
 
 export function ViewPost() {
     const { id } = useParams<{ id: string }>();
     const [post, setPost] = useState<any>(null);
     const [username, setUsername] = useState('');
+    const [comments, setComments] = useState<Array<any>>([]);
     const [loading, setLoading] = useState(false);
+    const [loadingComments, setLoadingComments] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     function handleLogout() {
         localStorage.removeItem('token');
         window.location.href = '/';
     }
+
+    async function fetchComments() {
+        if (!id) return;
+        setLoadingComments(true);
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`http://localhost:8080/comments/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                setComments([]);
+            } else {
+                console.log("Fetched comments:", data);
+                setComments(data);
+            }
+        } catch (err: any) {
+            console.error('Failed to fech comments:', err)
+        } finally {
+            setLoadingComments(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchComments();
+    }, [id]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -75,7 +109,7 @@ export function ViewPost() {
                 <main style={{
                     flexGrow: 1,
                     width: '100%',
-                    padding: '2rem 1rem',
+                    padding: '2rem 1rem 4rem 1rem',
                     background: '#fff',
                     height: '100%',
                     overflowY: 'auto'
@@ -101,7 +135,19 @@ export function ViewPost() {
                                     <DeletePost postId={post.ID} />
                                 )}
                             </div>
+                            <AddComment
+                                postId={post.ID}
+                                onCommentAdded={fetchComments}
+                            />
 
+                            {loadingComments ? (
+                                <div style={{ color: '#6b7280', marginTop: 20 }}>Loading comments...</div>
+                            ) : (
+                                <CommentsList
+                                    comments={comments}
+                                    currentUser={username}
+                                    onCommentDeleted={fetchComments}
+                                />)}
                         </article>
                     )}
                 </main>
