@@ -1,4 +1,6 @@
 import { useState, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
+import Logo from '../components/Logo';
 
 export default function RegisterPage() {
     const [username, setUsername] = useState('');
@@ -47,6 +49,7 @@ export default function RegisterPage() {
 
     return (
         <div style={{ maxWidth: 420, margin: '2rem auto', padding: '1rem', border: '1px solid #eee' }}>
+            <Logo />
             <h2>Register</h2>
             <form onSubmit={handleRegister}>
                 <div style={{ marginBottom: 8 }}>
@@ -59,6 +62,9 @@ export default function RegisterPage() {
                 </div>
                 {error && <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>}
                 <button type="submit" disabled={loading}>{loading ? 'Registering...' : 'Register'}</button>
+                <div>
+                    Already have an account? <Link to="/">Sign In</Link>
+                </div>
             </form>
         </div>
     );
