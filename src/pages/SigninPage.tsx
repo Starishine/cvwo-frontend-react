@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Logo from '../components/Logo';
+import { Link } from 'react-router-dom';
 
 export default function SigninPage() {
     const [username, setUsername] = useState('');
@@ -44,7 +46,8 @@ export default function SigninPage() {
     }
 
     return (
-        <div style={{ maxWidth: 420, margin: '2rem auto', padding: '1rem', border: '1px solid #eee' }}>
+        <div style={{ margin: '2rem auto', padding: '1rem', border: '1px solid #eee' }}>
+            <Logo />
             <h2>Sign In</h2>
             <form onSubmit={handleSignin}>
                 <div style={{ marginBottom: 8 }}>
@@ -59,6 +62,9 @@ export default function SigninPage() {
                 <button type="submit" disabled={loading}>
                     {loading ? 'Signing in...' : 'Sign In'}
                 </button>
+                <div>
+                    Don't have an account? <Link to="/register">Sign Up</Link>
+                </div>
             </form>
         </div>
     );
