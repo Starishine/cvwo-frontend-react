@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Logo from '../components/Logo';
+import { Link } from 'react-router-dom';
 
 export default function SigninPage() {
     const [username, setUsername] = useState('');
@@ -16,21 +18,23 @@ export default function SigninPage() {
             return;
         }
         try {
-            const token = localStorage.getItem('token');
             const response = await fetch('http://localhost:8080/auth/login', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username: username.trim(), password: password.trim() }),
+                credentials: 'include',
+                body: JSON.stringify({
+                    username: username.trim(),
+                    password: password.trim()
+                }),
             });
             const data = await response.json();
             if (!response.ok) {
                 setError(data.error || data.message);
             }
             else {
-                localStorage.setItem('token', data.token);
+                sessionStorage.setItem('access_token', data.access_token);
                 alert('Login successful!')
                 window.location.href = '/dashboard';
                 setUsername('');
@@ -44,7 +48,8 @@ export default function SigninPage() {
     }
 
     return (
-        <div style={{ maxWidth: 420, margin: '2rem auto', padding: '1rem', border: '1px solid #eee' }}>
+        <div style={{ margin: '2rem auto', padding: '1rem', border: '1px solid #eee' }}>
+            <Logo />
             <h2>Sign In</h2>
             <form onSubmit={handleSignin}>
                 <div style={{ marginBottom: 8 }}>
@@ -59,6 +64,9 @@ export default function SigninPage() {
                 <button type="submit" disabled={loading}>
                     {loading ? 'Signing in...' : 'Sign In'}
                 </button>
+                <div>
+                    Don't have an account? <Link to="/register">Sign Up</Link>
+                </div>
             </form>
         </div>
     );

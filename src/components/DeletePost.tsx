@@ -1,13 +1,13 @@
+import authFetch from "../utils/authFetch";
+
 export default function DeletePost({ postId }: { postId: string }) {
 
     async function deletePost(postId: string) {
         try {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:8080/deletepost/id/${postId}`, {
+            const res = await authFetch(`http://localhost:8080/deletepost/id/${postId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 }
             });
             const data = await res.json();

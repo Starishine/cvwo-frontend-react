@@ -6,6 +6,7 @@ import DeletePost from '../components/DeletePost';
 import { jwtDecode } from 'jwt-decode';
 import AddComment from '../components/AddComment';
 import CommentsList from '../components/CommentList';
+import authFetch from '../utils/authFetch';
 
 export function ViewPost() {
     const { id } = useParams<{ id: string }>();
@@ -17,7 +18,7 @@ export function ViewPost() {
     const [error, setError] = useState<string | null>(null);
 
     function handleLogout() {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('access_token');
         window.location.href = '/';
     }
 
@@ -25,12 +26,10 @@ export function ViewPost() {
         if (!id) return;
         setLoadingComments(true);
         try {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:8080/comments/${id}`, {
+            const res = await authFetch(`http://localhost:8080/comments/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 }
             });
             const data = await res.json();
@@ -52,10 +51,10 @@ export function ViewPost() {
     }, [id]);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
+        const accessToken = sessionStorage.getItem('access_token');
+        if (accessToken) {
             try {
-                const decoded = jwtDecode<any>(token);
+                const decoded = jwtDecode<any>(accessToken);
                 setUsername(decoded.sub);
             } catch (error) {
                 console.error("Failed to decode token", error);
@@ -69,12 +68,10 @@ export function ViewPost() {
             setLoading(true);
             setError(null);
             try {
-                const token = localStorage.getItem('token');
-                const res = await fetch(`http://localhost:8080/post/id/${id}`, {
+                const res = await authFetch(`http://localhost:8080/post/id/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
                     }
                 });
                 const data = await res.json();
@@ -118,7 +115,7 @@ export function ViewPost() {
                     {!loading && !error && !post && <div style={{ color: '#6b7280' }}>No post found</div>}
                     {post && (
                         <article style={{ background: '#fff', borderRadius: 10, padding: 20, boxShadow: '0 6px 18px rgba(15,23,42,0.06)' }}>
-                            <div style={{ display: 'flex', gap: 12, marginBottom: 12 }}>
+                            <div style={{ display: 'flex', gap: 20, marginBottom: 16, alignItems: 'flex-start' }}>
                                 <div style={{ fontSize: 13, color: '#6b7280' }}>{post.topic}</div>
                                 <div style={{ flex: 1 }}>
                                     <h1 style={{ margin: 0 }}>{post.title}</h1>

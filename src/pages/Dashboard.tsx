@@ -12,15 +12,15 @@ export default function Dashboard() {
     }
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const accessToken = sessionStorage.getItem('access_token');
 
-        if (!token) {
+        if (!accessToken) {
             window.location.href = '/';
             return;
         }
 
         try {
-            const decoded = jwtDecode<any>(token);
+            const decoded = jwtDecode<any>(accessToken);
             const username = decoded.sub;
             console.log("Username from token:", username);
             setUsername(username);

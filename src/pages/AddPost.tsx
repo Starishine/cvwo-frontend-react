@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Topics from '../components/Topics';
 import Header from '../components/Header';
+import authFetch from '../utils/authFetch';
 
 export default function AddPost() {
     const [username, setUsername] = useState('');
@@ -14,15 +15,15 @@ export default function AddPost() {
     const defaultTopics = ['Technology', 'Health', 'Science', 'Travel', 'Education', 'Entertainment', 'Sports', 'Business'];
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const accessToken = sessionStorage.getItem('access_token');
 
-        if (!token) {
+        if (!accessToken) {
             window.location.href = '/';
             return;
         }
 
         try {
-            const decoded = jwtDecode<any>(token);
+            const decoded = jwtDecode<any>(accessToken);
             const username = decoded.sub;
             console.log("Username from token:", username);
             setUsername(username);
@@ -35,7 +36,7 @@ export default function AddPost() {
     }, []);
 
     function handleLogout() {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('access_token');
         window.location.href = '/';
     }
 
@@ -51,11 +52,9 @@ export default function AddPost() {
         }
 
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/post', {
+            const response = await authFetch('http://localhost:8080/post', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ topic: topic.trim(), title: title.trim(), content: content.trim(), author: username }),
