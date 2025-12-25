@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Topics from '../components/Topics';
 import Header from '../components/Header';
-import { Link } from 'react-router-dom';
+import authFetch from '../utils/authFetch';
 
 
 export default function PostByTopic() {
@@ -13,7 +13,7 @@ export default function PostByTopic() {
     const [error, setError] = useState<string | null>(null);
 
     function handleLogout() {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('access_token');
         window.location.href = '/';
     }
 
@@ -27,8 +27,8 @@ export default function PostByTopic() {
             setLoading(true);
             setError(null);
             try {
-                const res = await fetch(`http://localhost:8080/post/topic/${encodeURIComponent(decodedTopic)}`);
-                const data = await res.json().catch(() => ([]));
+                const res = await authFetch(`http://localhost:8080/post/topic/${encodeURIComponent(decodedTopic)}`);
+                const data = await res.json();
 
                 if (!res.ok) {
                     setError(data.error || data.message || 'Failed to load posts');

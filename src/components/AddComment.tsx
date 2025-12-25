@@ -1,5 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
+import authFetch from "../utils/authFetch";
 
 export default function AddComment({ postId, onCommentAdded }: { postId: string, onCommentAdded: () => void }) {
     const [comment, setComment] = useState('');
@@ -8,22 +9,22 @@ export default function AddComment({ postId, onCommentAdded }: { postId: string,
     const [username, setUsername] = useState('');
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const accessToken = sessionStorage.getItem('access_token');
 
-        if (!token) {
+        if (!accessToken) {
             window.location.href = '/';
             return;
         }
 
         try {
-            const decoded = jwtDecode<any>(token);
+            const decoded = jwtDecode<any>(accessToken);
             const username = decoded.sub;
             console.log("Username from token:", username);
             setUsername(username);
         } catch (error) {
             console.error("Failed to decode token", error);
             window.location.href = '/';
-            localStorage.removeItem('token');
+            sessionStorage.removeItem('access_token');
         }
 
     }, []);
@@ -38,12 +39,10 @@ export default function AddComment({ postId, onCommentAdded }: { postId: string,
         setError(null);
 
         try {
-            const token = localStorage.getItem('token');
-            const res = await fetch('http://localhost:8080/comment', {
+            const res = await authFetch('http://localhost:8080/comment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     post_id: postId,

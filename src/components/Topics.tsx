@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
+import authFetch from '../utils/authFetch';
 
 export default function Topics() {
     const [topics, setTopics] = useState<Array<string>>([]);
@@ -9,7 +10,7 @@ export default function Topics() {
     useEffect(() => {
         const fetchTopics = async () => {
             try {
-                const res = await fetch(`http://localhost:8080/post/topics`);
+                const res = await authFetch(`http://localhost:8080/post/topics`);
                 const data = await res.json();
 
                 if (!res.ok) {

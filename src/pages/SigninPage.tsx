@@ -18,21 +18,23 @@ export default function SigninPage() {
             return;
         }
         try {
-            const token = localStorage.getItem('token');
             const response = await fetch('http://localhost:8080/auth/login', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username: username.trim(), password: password.trim() }),
+                credentials: 'include',
+                body: JSON.stringify({
+                    username: username.trim(),
+                    password: password.trim()
+                }),
             });
             const data = await response.json();
             if (!response.ok) {
                 setError(data.error || data.message);
             }
             else {
-                localStorage.setItem('token', data.token);
+                sessionStorage.setItem('access_token', data.access_token);
                 alert('Login successful!')
                 window.location.href = '/dashboard';
                 setUsername('');

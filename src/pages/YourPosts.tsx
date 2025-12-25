@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { jwtDecode } from "jwt-decode";
 import Topics from "../components/Topics";
 import Header from "../components/Header";
-import DeletePost from "../components/DeletePost";
+import authFetch from "../utils/authFetch";
 
 
 export default function YourPosts() {
@@ -12,7 +12,7 @@ export default function YourPosts() {
     const [posts, setPosts] = useState<Array<any>>([]);
 
     function handleLogout() {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('access_token');
         window.location.href = '/';
     }
 
@@ -21,21 +21,21 @@ export default function YourPosts() {
     }
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
+        const accessToken = sessionStorage.getItem('access_token');
+        if (!accessToken) {
             window.location.href = '/';
             return;
         }
 
         try {
-            const decoded = jwtDecode<any>(token);
+            const decoded = jwtDecode<any>(accessToken);
             const username = decoded.sub;
             console.log("Username from token:", username);
             setUsername(username);
         } catch (error) {
             console.error("Failed to decode token", error);
             window.location.href = '/';
-            localStorage.removeItem('token');
+            sessionStorage.removeItem('access_token');
         }
 
     }, []);
@@ -44,12 +44,10 @@ export default function YourPosts() {
         if (!username) return;
         const fetchPosts = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const res = await fetch(`http://localhost:8080/post/${username}`, {
+                const res = await authFetch(`http://localhost:8080/post/${username}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
                     }
                 });
 

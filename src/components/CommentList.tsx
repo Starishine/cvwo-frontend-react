@@ -1,4 +1,5 @@
 import { useState } from "react";
+import authFetch from "../utils/authFetch";
 interface Comment {
     ID: number
     post_id: number
@@ -32,11 +33,10 @@ export default function CommentList({ comments, currentUser, onCommentDeleted }
         setDeletingId(commentId);
         setError(null);
         try {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:8080/deletecomment/id/${commentId}`, {
+            const res = await authFetch(`http://localhost:8080/deletecomment/id/${commentId}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json',
                 }
             });
             if (res.ok) {
