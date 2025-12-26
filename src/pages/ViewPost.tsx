@@ -51,10 +51,10 @@ export function ViewPost() {
     }, [id]);
 
     useEffect(() => {
-        const accessToken = sessionStorage.getItem('access_token');
-        if (accessToken) {
+        const access_token = sessionStorage.getItem('access_token');
+        if (access_token) {
             try {
-                const decoded = jwtDecode<any>(accessToken);
+                const decoded = jwtDecode<any>(access_token);
                 setUsername(decoded.sub);
             } catch (error) {
                 console.error("Failed to decode token", error);
