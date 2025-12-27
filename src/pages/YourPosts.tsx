@@ -11,11 +11,6 @@ export default function YourPosts() {
     const [error, setError] = useState<string | null>(null);
     const [posts, setPosts] = useState<Array<any>>([]);
 
-    function handleLogout() {
-        sessionStorage.removeItem('access_token');
-        window.location.href = '/';
-    }
-
     function viewPost(postId: string) {
         window.location.href = `/post/id/${postId}`;
     }
@@ -80,7 +75,7 @@ export default function YourPosts() {
             width: '85vw',
             overflow: 'hidden'
         }}>
-            <Header onLogout={handleLogout} />
+            <Header />
             <div style={{
                 display: 'flex',
                 flexGrow: 1,

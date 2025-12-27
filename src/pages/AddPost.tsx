@@ -35,11 +35,6 @@ export default function AddPost() {
 
     }, []);
 
-    function handleLogout() {
-        sessionStorage.removeItem('access_token');
-        window.location.href = '/';
-    }
-
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setLoading(true);
@@ -88,7 +83,7 @@ export default function AddPost() {
             width: '85vw',
             overflow: 'hidden'
         }}>
-            <Header onLogout={handleLogout} />
+            <Header />
             <div style={{
                 display: 'flex',
                 flexGrow: 1,

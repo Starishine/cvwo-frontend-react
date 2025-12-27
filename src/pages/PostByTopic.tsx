@@ -12,10 +12,6 @@ export default function PostByTopic() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    function handleLogout() {
-        sessionStorage.removeItem('access_token');
-        window.location.href = '/';
-    }
 
     function viewPost(postId: string) {
         window.location.href = `/post/id/${postId}`;
@@ -54,7 +50,7 @@ export default function PostByTopic() {
             width: '85vw',
             overflow: 'hidden'
         }}>
-            <Header onLogout={handleLogout} />
+            <Header />
             <div style={{
                 display: 'flex',
                 flexGrow: 1,

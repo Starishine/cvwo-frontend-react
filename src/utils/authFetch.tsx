@@ -30,7 +30,8 @@ export default async function authFetch(url: string, options: RequestInit = {}) 
             ...options,
             headers: {
                 ...options.headers,
-                'Authorization': `Bearer ${access_token}`
+                'Authorization': `Bearer ${access_token}`,
+                credentials: 'include'
             }
         });
     }

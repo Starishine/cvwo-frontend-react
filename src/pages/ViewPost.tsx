@@ -17,10 +17,6 @@ export function ViewPost() {
     const [loadingComments, setLoadingComments] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    function handleLogout() {
-        sessionStorage.removeItem('access_token');
-        window.location.href = '/';
-    }
 
     async function fetchComments() {
         if (!id) return;
@@ -100,7 +96,7 @@ export function ViewPost() {
             width: '85vw',
             overflow: 'hidden'
         }}>
-            <Header onLogout={handleLogout} />
+            <Header />
             <div style={{ display: 'flex', flexGrow: 1, width: '100%', height: 'calc(100vh - 64px)' }}>
                 <Topics />
                 <main style={{

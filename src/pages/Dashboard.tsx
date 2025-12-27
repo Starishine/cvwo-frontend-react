@@ -6,14 +6,8 @@ import Header from "../components/Header";
 export default function Dashboard() {
     const [username, setUsername] = useState('');
 
-    function handleLogout() {
-        localStorage.removeItem('token');
-        window.location.href = '/';
-    }
-
     useEffect(() => {
         const access_token = sessionStorage.getItem('access_token');
-
         if (!access_token) {
             window.location.href = '/';
             return;
@@ -21,15 +15,10 @@ export default function Dashboard() {
 
         try {
             const decoded = jwtDecode<any>(access_token);
-            const username = decoded.sub;
-            console.log("Username from token:", username);
-            setUsername(username);
-        } catch (error) {
-            console.error("Failed to decode token", error);
+            setUsername(decoded.sub);
+        } catch (err) {
             window.location.href = '/';
-            localStorage.removeItem('token');
         }
-
     }, []);
 
     return (
@@ -41,7 +30,7 @@ export default function Dashboard() {
             width: '85vw',
             overflow: 'hidden',
         }}>
-            <Header onLogout={handleLogout} />
+            <Header />
 
             {/* fixd full width */}
             <div style={{

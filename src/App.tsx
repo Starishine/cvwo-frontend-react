@@ -7,7 +7,6 @@ import AddPost from './pages/AddPost'
 import YourPosts from './pages/YourPosts'
 import PostByTopic from './pages/PostByTopic'
 import { ViewPost } from './pages/ViewPost'
-import DeletePost from './components/DeletePost'
 
 function App() {
 
