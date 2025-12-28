@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import Logo from '../components/Logo';
 import { Link } from 'react-router-dom';
 
@@ -9,19 +9,12 @@ export default function SigninPage() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // Don't auto-refresh if we just cleared everything
-        const hasAnySessionData = sessionStorage.length > 0;
-
-        if (hasAnySessionData) {
-            initSession();
-        } else {
-            console.log("No session data, staying on login page");
-        }
+        initSession();
     }, []);
 
     async function initSession() {
         const access_token = sessionStorage.getItem('access_token');
-
+        // no access token, try to refresh
         if (!access_token) {
             try {
                 const res = await fetch('http://localhost:8080/auth/refresh', {
@@ -40,6 +33,9 @@ export default function SigninPage() {
             } catch (err) {
                 console.error('Refresh failed:', err);
             }
+        } else {
+            // has access token, go to dashboard
+            window.location.href = '/dashboard';
         }
     }
     async function handleSignin(e: React.FormEvent) {
