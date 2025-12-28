@@ -1,5 +1,5 @@
 export default async function authFetch(url: string, options: RequestInit = {}) {
-    let access_token = sessionStorage.getItem('accessToken');
+    let access_token = sessionStorage.getItem('access_token');
 
     let response = await fetch(url, {
         ...options,
@@ -21,16 +21,17 @@ export default async function authFetch(url: string, options: RequestInit = {}) 
         }
 
         const refreshData = await refreshResponse.json();
-        sessionStorage.setItem('accessToken', refreshData.accessToken);
+        sessionStorage.setItem('access_token', refreshData.access_token);
 
         // retry original request with new token
-        access_token = refreshData.accessToken;
+        access_token = refreshData.access_token;
 
         response = await fetch(url, {
             ...options,
             headers: {
                 ...options.headers,
-                'Authorization': `Bearer ${access_token}`
+                'Authorization': `Bearer ${access_token}`,
+                credentials: 'include'
             }
         });
     }

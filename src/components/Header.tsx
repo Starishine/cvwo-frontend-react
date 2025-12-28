@@ -1,6 +1,7 @@
 import Logo from "./Logo";
+import Logout from "./Logout";
 
-export default function Header({ onLogout }: { onLogout?: () => void }) {
+export default function Header() {
     return (
         <header style={{
             display: 'flex',
@@ -21,19 +22,7 @@ export default function Header({ onLogout }: { onLogout?: () => void }) {
                 <a href="/your-posts" style={{ textDecoration: 'none', color: '#111827', padding: '8px 12px', borderRadius: 8 }}>
                     Your Posts
                 </a>
-                <button
-                    onClick={onLogout}
-                    style={{
-                        background: '#ef4444',
-                        color: '#fff',
-                        border: 'none',
-                        padding: '8px 12px',
-                        borderRadius: 8,
-                        cursor: 'pointer'
-                    }}
-                >
-                    Logout
-                </button>
+                <Logout />
             </nav>
         </header>
     );

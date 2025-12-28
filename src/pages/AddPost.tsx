@@ -15,15 +15,15 @@ export default function AddPost() {
     const defaultTopics = ['Technology', 'Health', 'Science', 'Travel', 'Education', 'Entertainment', 'Sports', 'Business'];
 
     useEffect(() => {
-        const accessToken = sessionStorage.getItem('access_token');
+        const access_token = sessionStorage.getItem('access_token');
 
-        if (!accessToken) {
+        if (!access_token) {
             window.location.href = '/';
             return;
         }
 
         try {
-            const decoded = jwtDecode<any>(accessToken);
+            const decoded = jwtDecode<any>(access_token);
             const username = decoded.sub;
             console.log("Username from token:", username);
             setUsername(username);
@@ -34,11 +34,6 @@ export default function AddPost() {
         }
 
     }, []);
-
-    function handleLogout() {
-        sessionStorage.removeItem('access_token');
-        window.location.href = '/';
-    }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -88,7 +83,7 @@ export default function AddPost() {
             width: '85vw',
             overflow: 'hidden'
         }}>
-            <Header onLogout={handleLogout} />
+            <Header />
             <div style={{
                 display: 'flex',
                 flexGrow: 1,

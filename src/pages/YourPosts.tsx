@@ -11,24 +11,19 @@ export default function YourPosts() {
     const [error, setError] = useState<string | null>(null);
     const [posts, setPosts] = useState<Array<any>>([]);
 
-    function handleLogout() {
-        sessionStorage.removeItem('access_token');
-        window.location.href = '/';
-    }
-
     function viewPost(postId: string) {
         window.location.href = `/post/id/${postId}`;
     }
 
     useEffect(() => {
-        const accessToken = sessionStorage.getItem('access_token');
-        if (!accessToken) {
+        const access_token = sessionStorage.getItem('access_token');
+        if (!access_token) {
             window.location.href = '/';
             return;
         }
 
         try {
-            const decoded = jwtDecode<any>(accessToken);
+            const decoded = jwtDecode<any>(access_token);
             const username = decoded.sub;
             console.log("Username from token:", username);
             setUsername(username);
@@ -80,7 +75,7 @@ export default function YourPosts() {
             width: '85vw',
             overflow: 'hidden'
         }}>
-            <Header onLogout={handleLogout} />
+            <Header />
             <div style={{
                 display: 'flex',
                 flexGrow: 1,

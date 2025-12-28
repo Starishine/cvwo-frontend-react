@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import Logo from '../components/Logo';
 import { Link } from 'react-router-dom';
 
@@ -8,10 +8,41 @@ export default function SigninPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    useEffect(() => {
+        initSession();
+    }, []);
+
+    async function initSession() {
+        const access_token = sessionStorage.getItem('access_token');
+        // no access token, try to refresh
+        if (!access_token) {
+            try {
+                const res = await fetch('http://localhost:8080/auth/refresh', {
+                    method: 'POST',
+                    credentials: 'include',
+                });
+
+                if (!res.ok) {
+                    console.log('No valid refresh token, staying on signin page');
+                    return;
+                }
+
+                const data = await res.json();
+                sessionStorage.setItem('access_token', data.access_token);
+                window.location.href = '/dashboard';
+            } catch (err) {
+                console.error('Refresh failed:', err);
+            }
+        } else {
+            // has access token, go to dashboard
+            window.location.href = '/dashboard';
+        }
+    }
     async function handleSignin(e: React.FormEvent) {
         e.preventDefault();
         setLoading(true);
         setError(null);
+
         if (!username.trim() || !password.trim()) {
             setError('Username and password cannot be empty.');
             setLoading(false);
@@ -34,6 +65,7 @@ export default function SigninPage() {
                 setError(data.error || data.message);
             }
             else {
+                localStorage.removeItem('logged_out');
                 sessionStorage.setItem('access_token', data.access_token);
                 alert('Login successful!')
                 window.location.href = '/dashboard';
