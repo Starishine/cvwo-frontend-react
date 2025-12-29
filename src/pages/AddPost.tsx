@@ -9,7 +9,8 @@ export default function AddPost() {
     const [username, setUsername] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [topic, setTopic] = useState('');
+    const [customTopic, setCustomTopic] = useState('');
+    const [selectedTopic, setSelectedTopic] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const defaultTopics = ['Technology', 'Health', 'Science', 'Travel', 'Education', 'Entertainment', 'Sports', 'Business'];
@@ -40,7 +41,10 @@ export default function AddPost() {
         setLoading(true);
         setError(null);
 
-        if (!topic.trim() || !title.trim() || !content.trim()) {
+        // determine actual topic (use custom if selected)
+        const actualTopic = selectedTopic === '__custom__' ? customTopic.trim() : selectedTopic.trim();
+
+        if (!actualTopic.trim() || !title.trim() || !content.trim()) {
             setError('All fields are required.');
             setLoading(false);
             return;
@@ -52,7 +56,7 @@ export default function AddPost() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ topic: topic.trim(), title: title.trim(), content: content.trim(), author: username }),
+                body: JSON.stringify({ topic: actualTopic.trim(), title: title.trim(), content: content.trim(), author: username }),
             });
             const data = await response.json();
             if (!response.ok) {
@@ -60,7 +64,8 @@ export default function AddPost() {
             }
             else {
                 alert('Post added successfully!')
-                setTopic('');
+                setSelectedTopic('');
+                setCustomTopic('');
                 setTitle('');
                 setContent('');
                 window.location.href = '/dashboard';
@@ -101,10 +106,10 @@ export default function AddPost() {
                 }}>
                     <h2>Add a new post</h2>
                     <p style={{ color: '#6b7280' }}>Logged in as {username || 'guest'}</p>
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 720 }}>
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 800 }}>
                         <select
-                            value={topic}
-                            onChange={e => setTopic(e.target.value)}
+                            value={selectedTopic}
+                            onChange={e => setSelectedTopic(e.target.value)}
                             style={{
                                 width: '100%',
                                 padding: 10,
@@ -120,11 +125,11 @@ export default function AddPost() {
                             ))}
                             <option value="__custom__">+ Add custom topic</option>
                         </select>
-                        {topic === '__custom__' && (
+                        {selectedTopic === '__custom__' && (
                             <input
                                 type="text"
                                 placeholder="Enter custom topic"
-                                onChange={e => setTopic(e.target.value)}
+                                onChange={e => setCustomTopic(e.target.value)}
                                 style={{
                                     width: '100%',
                                     padding: 10,

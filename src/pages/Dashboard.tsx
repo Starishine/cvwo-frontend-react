@@ -45,6 +45,7 @@ export default function Dashboard() {
                     flexGrow: 1,
                     padding: '2rem 1rem',
                     background: '#fff',
+                    alignItems: 'center',
                     height: '100%',
                     overflowY: 'auto'
                 }}>
