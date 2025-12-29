@@ -1,5 +1,6 @@
 import Logo from "./Logo";
 import Logout from "./Logout";
+import Search from "./Search";
 
 export default function Header() {
     return (
@@ -16,6 +17,7 @@ export default function Header() {
             <Logo />
 
             <nav style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                <Search />
                 <a href="/add-post" style={{ textDecoration: 'none', color: '#111827', padding: '8px 12px', borderRadius: 8 }}>
                     New Post
                 </a>
