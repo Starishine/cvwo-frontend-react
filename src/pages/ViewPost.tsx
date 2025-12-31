@@ -7,6 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 import AddComment from '../components/AddComment';
 import CommentsList from '../components/CommentList';
 import authFetch from '../utils/authFetch';
+import LikePost from '../components/LikePost';
 
 export function ViewPost() {
     const { id } = useParams<{ id: string }>();
@@ -128,6 +129,7 @@ export function ViewPost() {
                                     <DeletePost postId={post.ID} />
                                 )}
                             </div>
+                            <LikePost postId={post.ID} />
                             <AddComment
                                 postId={post.ID}
                                 onCommentAdded={fetchComments}

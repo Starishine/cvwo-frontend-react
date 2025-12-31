@@ -3,6 +3,7 @@ export default async function authFetch(url: string, options: RequestInit = {}) 
 
     let response = await fetch(url, {
         ...options,
+        credentials: 'include',
         headers: {
             ...options.headers,
             'Authorization': `Bearer ${access_token}`
@@ -28,10 +29,10 @@ export default async function authFetch(url: string, options: RequestInit = {}) 
 
         response = await fetch(url, {
             ...options,
+            credentials: 'include',
             headers: {
                 ...options.headers,
                 'Authorization': `Bearer ${access_token}`,
-                credentials: 'include'
             }
         });
     }

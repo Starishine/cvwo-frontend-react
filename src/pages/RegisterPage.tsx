@@ -37,6 +37,7 @@ export default function RegisterPage() {
                 alert('Registration successful!');
                 setUsername('');
                 setPassword('');
+                window.location.href = '/dashboard';
             }
         }
         catch (err: any) {
