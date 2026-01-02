@@ -8,6 +8,7 @@ import AddComment from '../components/AddComment';
 import CommentsList from '../components/CommentList';
 import authFetch from '../utils/authFetch';
 import LikePost from '../components/LikePost';
+import EditPost from '../components/EditPost';
 
 export function ViewPost() {
     const { id } = useParams<{ id: string }>();
@@ -17,6 +18,7 @@ export function ViewPost() {
     const [loading, setLoading] = useState(false);
     const [loadingComments, setLoadingComments] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showEdit, setShowEdit] = useState(false);
 
 
     async function fetchComments() {
@@ -59,32 +61,33 @@ export function ViewPost() {
         }
     }, []);
 
+    const fetchPost = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const res = await authFetch(`http://localhost:8080/post/id/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                setError(data.error || data.message || 'Failed to load post');
+                setPost(null);
+            } else {
+                console.log("Fetched post:", data);
+                setPost(data);
+            }
+        } catch (err: any) {
+            setError(err.message || 'An unexpected error occurred');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         if (!id) return;
-        const fetchPost = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const res = await authFetch(`http://localhost:8080/post/id/${id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
-                const data = await res.json();
-                if (!res.ok) {
-                    setError(data.error || data.message || 'Failed to load post');
-                    setPost(null);
-                } else {
-                    console.log("Fetched post:", data);
-                    setPost(data);
-                }
-            } catch (err: any) {
-                setError(err.message || 'An unexpected error occurred');
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchPost();
     }, [id]);
 
@@ -126,9 +129,22 @@ export function ViewPost() {
                             <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-start', gap: 8 }}>
                                 <Link to={`/topic/${encodeURIComponent(post.topic)}`} style={{ marginRight: 8 }}>← Back</Link>
                                 {username === post.author && (
-                                    <DeletePost postId={post.ID} />
+                                    <>
+                                        <button onClick={() => setShowEdit(s => !s)} style={{ padding: '6px 10px', borderRadius: 6 }}>Edit</button>
+                                        <DeletePost postId={post.ID} />
+                                    </>
                                 )}
                             </div>
+                            {showEdit && (
+                                <EditPost
+                                    post={post}
+                                    onUpdated={() => {
+                                        fetchPost();
+                                        setShowEdit(false);
+                                    }}
+                                    onCancel={() => setShowEdit(false)}
+                                />
+                            )}
                             <LikePost postId={post.ID} />
                             <AddComment
                                 postId={post.ID}
