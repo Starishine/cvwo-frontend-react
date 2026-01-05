@@ -68,23 +68,11 @@ export default function AddComment({ postId, onCommentAdded }: { postId: string,
     }
 
     return (
-        <div style={{
-            background: '#f9fafb',
-            borderRadius: 8,
-            padding: 16,
-            marginTop: 20
-        }}>
-            <h3 style={{ margin: '0 0 12px 0', fontSize: 16, fontWeight: 600 }}>Add a Comment</h3>
+        <div className="bg-gray-50 rounded-lg p-4 mt-5">
+            <h3 className="m-0 mb-3 text-base font-semibold text-gray-900">Add a Comment</h3>
 
             {error && (
-                <div style={{
-                    background: '#fee2e2',
-                    color: '#dc2626',
-                    padding: 10,
-                    borderRadius: 6,
-                    fontSize: 14,
-                    marginBottom: 12
-                }}>
+                <div className="bg-red-50 text-red-600 p-2.5 rounded-md text-sm mb-3">
                     {error}
                 </div>
             )}
@@ -94,44 +82,18 @@ export default function AddComment({ postId, onCommentAdded }: { postId: string,
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Write your comment here..."
                 disabled={isSubmitting}
-                style={{
-                    width: '100%',
-                    minHeight: 100,
-                    padding: 12,
-                    border: '1px solid #d1d5db',
-                    borderRadius: 6,
-                    fontSize: 14,
-                    fontFamily: 'inherit',
-                    resize: 'vertical',
-                    boxSizing: 'border-box'
-                }}
+                className="w-full min-h-[100px] p-3 border border-gray-300 rounded-md text-sm font-inherit resize-y 
+                box-border focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             />
 
             <button
                 onClick={handleSubmit}
                 disabled={isSubmitting || !comment.trim()}
-                style={{
-                    marginTop: 12,
-                    background: isSubmitting || !comment.trim() ? '#9ca3af' : '#2563eb',
-                    color: '#fff',
-                    border: 'none',
-                    padding: '8px 16px',
-                    borderRadius: 6,
-                    cursor: isSubmitting || !comment.trim() ? 'not-allowed' : 'pointer',
-                    fontSize: 14,
-                    fontWeight: 500,
-                    transition: 'all 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                    if (!isSubmitting && comment.trim()) {
-                        e.currentTarget.style.background = '#1d4ed8';
-                    }
-                }}
-                onMouseLeave={(e) => {
-                    if (!isSubmitting && comment.trim()) {
-                        e.currentTarget.style.background = '#2563eb';
-                    }
-                }}
+                className={`mt-3 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 
+                    ${isSubmitting || !comment.trim()
+                        ? 'bg-gray-400 text-white cursor-not-allowed'
+                        : 'bg-blue-600 text-white cursor-pointer hover:bg-blue-700 active:bg-blue-800'
+                    }`}
             >
                 {isSubmitting ? 'Posting...' : 'Post Comment'}
             </button>

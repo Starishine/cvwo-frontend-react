@@ -33,12 +33,17 @@ export default function ReplyList({ currentUser, parentId, refresh }: { currentU
     }, [parentId, refresh]);
 
     return (
-        <div style={{ marginTop: 8, paddingBottom: 12 }}>
-            {loading && <div style={{ color: '#6b7280', fontSize: 13 }}>Loading replies…</div>}
-            {error && <div style={{ color: '#dc2626', fontSize: 13 }}>{error}</div>}
-            {!loading && !error && replies.length === 0 && <div style={{ color: '#6b7280', fontSize: 13 }}>No replies yet.</div>}
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8 }}>
+        <div className="mt-2 pb-3">
+            {loading && replies.length === 0 && (
+                <div className="text-gray-500 text-xs animate-pulse">Loading replies…</div>
+            )}
+            {error && (
+                <div className="text-red-600 text-xs font-medium">{error}</div>
+            )}
+            {!loading && !error && replies.length === 0 && (
+                <div className="text-gray-400 text-xs italic">No replies yet.</div>
+            )}
+            <div className="flex flex-col gap-2 mt-2">
                 {replies.map((r) => {
                     const key = r.ID ?? r.id ?? r._id ?? Math.random();
                     const author = r.author ?? r.Author ?? 'Unknown';
@@ -47,48 +52,34 @@ export default function ReplyList({ currentUser, parentId, refresh }: { currentU
                     const initial = author ? String(author)[0].toUpperCase() : '?';
 
                     return (
-                        <div key={key} style={{
-                            display: 'flex',
-                            gap: 12,
-                            alignItems: 'flex-start',
-                            padding: 12,
-                            background: '#fff',
-                            borderRadius: 8,
-                            border: '1px solid #e5e7eb'
-                        }}>
-                            <div style={{
-                                width: 36, height: 36, borderRadius: 999,
-                                background: '#f1f5f9', display: 'flex',
-                                alignItems: 'center', justifyContent: 'center',
-                                fontWeight: 700, color: '#111827'
-                            }}>
+                        <div key={key} className="flex gap-3 items-start p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
+                            {/* Avatar Icon */}
+                            <div className="w-9 h-9 shrink-0 rounded-full bg-slate-100 flex items-center justify-center font-bold text-gray-900 text-sm">
                                 {initial}
                             </div>
 
-                            <div style={{ flex: 1 }}>
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    gap: 12,
-                                    marginBottom: 6,
-                                    alignItems: 'center'
-                                }}>
-                                    <div style={{ fontSize: 13, fontWeight: 600, color: '#111827' }}>{author}</div>
-                                    <div style={{ fontSize: 12, color: '#9ca3af' }}>{time ? new Date(time).toLocaleString() : ''}</div>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex justify-between items-center gap-3 mb-1.5">
+                                    <div className="text-xs font-semibold text-gray-900 truncate">
+                                        {author}
+                                    </div>
+                                    <div className="text-[11px] text-gray-400 whitespace-nowrap">
+                                        {time ? new Date(time).toLocaleString() : ''}
+                                    </div>
                                 </div>
 
-                                <div style={{
-                                    color: '#374151',
-                                    fontSize: 14,
-                                    lineHeight: 1.6,
-                                    whiteSpace: 'pre-wrap',
-                                    overflowWrap: 'break-word'
-                                }}>
+                                <div className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap break-words">
                                     {content}
                                 </div>
                             </div>
+
                             {currentUser === r.author && (
-                                <DeleteComment commentId={r.ID} onCommentDeleted={() => fetchReplies()} />
+                                <div className="ml-2">
+                                    <DeleteComment
+                                        commentId={r.ID}
+                                        onCommentDeleted={() => fetchReplies()}
+                                    />
+                                </div>
                             )}
                         </div>
                     );

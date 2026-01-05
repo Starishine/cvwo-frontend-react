@@ -28,30 +28,19 @@ export default function DeleteComment({ commentId, onCommentDeleted }: { comment
         }
     }
 
+    const isDeleting = deletingId === commentId;
     return (
-        <button
-            onClick={() => handleDelete(commentId)}
-            disabled={deletingId === commentId}
-            style={{
-                background: 'transparent',
-                color: '#dc2626',
-                border: 'none',
-                cursor: deletingId === commentId ? 'not-allowed' : 'pointer',
-                fontSize: 12,
-                padding: '4px 8px',
-                borderRadius: 4,
-                transition: 'background 0.2s'
-            }}
-            onMouseEnter={(e) => {
-                if (deletingId !== commentId) {
-                    e.currentTarget.style.background = '#fee2e2';
-                }
-            }}
-            onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-            }}
-        >
-            {deletingId === commentId ? 'Deleting...' : 'Delete'}
-        </button>
+        <div className="flex flex-col items-end">
+            <button
+                onClick={() => handleDelete(commentId)}
+                disabled={isDeleting}
+                className={`
+                    bg-transparent text-red-600 border-none text-xs px-2 py-1 rounded transition-colors duration-200
+                    ${isDeleting ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-red-100 active:bg-red-200'}
+                `}
+            >
+                {deletingId === commentId ? 'Deleting...' : 'Delete'}
+            </button>
+        </div>
     )
 }

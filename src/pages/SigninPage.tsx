@@ -80,24 +80,39 @@ export default function SigninPage() {
     }
 
     return (
-        <div style={{ margin: '2rem auto', padding: '1rem', border: '1px solid #eee' }}>
+        <div className="max-w-md mx-auto my-16 p-8 bg-white border border-gray-100 rounded-xl shadow-sm">
             <Logo />
-            <h2>Sign In</h2>
-            <form onSubmit={handleSignin}>
-                <div style={{ marginBottom: 8 }}>
-                    <label>Username</label><br />
-                    <input value={username} onChange={e => setUsername(e.target.value)} required />
+            <h2 className="text-2xl font-bold my-6">Sign In</h2>
+            <form onSubmit={handleSignin} className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium mb-1">Username</label>
+                    <input
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        required
+                    />
                 </div>
-                <div style={{ marginBottom: 8 }}>
-                    <label>Password</label><br />
-                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+                <div>
+                    <label className="block text-sm font-medium mb-1">Password</label>
+                    <input
+                        type="password"
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        required
+                    />
                 </div>
-                {error && <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>}
-                <button type="submit" disabled={loading}>
+                {error && <div className="text-red-500 text-sm">{error}</div>}
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+                >
                     {loading ? 'Signing in...' : 'Sign In'}
                 </button>
-                <div>
-                    Don't have an account? <Link to="/register">Sign Up</Link>
+                <div className="text-center text-sm text-gray-600 mt-4">
+                    Don't have an account? <Link to="/register" className="text-blue-600 hover:underline">Sign Up</Link>
                 </div>
             </form>
         </div>

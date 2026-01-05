@@ -8,6 +8,7 @@ import AddComment from '../components/AddComment';
 import CommentsList from '../components/CommentList';
 import authFetch from '../utils/authFetch';
 import LikePost from '../components/LikePost';
+import EditPost from '../components/EditPost';
 
 export function ViewPost() {
     const { id } = useParams<{ id: string }>();
@@ -17,6 +18,7 @@ export function ViewPost() {
     const [loading, setLoading] = useState(false);
     const [loadingComments, setLoadingComments] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showEdit, setShowEdit] = useState(false);
 
 
     async function fetchComments() {
@@ -30,14 +32,19 @@ export function ViewPost() {
                 }
             });
             const data = await res.json();
+            console.log("Fetch comments response", res.status, data);
             if (!res.ok) {
+                console.warn('Comments fetch failed:', data);
                 setComments([]);
             } else {
-                console.log("Fetched comments:", data);
-                setComments(data);
+                // handle different shapes: array, { comments: [...] }, { data: [...] }
+                const list = Array.isArray(data) ? data : (Array.isArray(data.comments) ? data.comments : (Array.isArray(data.data) ? data.data : []));
+                if (list.length === 0) console.debug('No comments found in response');
+                setComments(list);
             }
         } catch (err: any) {
-            console.error('Failed to fech comments:', err)
+            console.error('Failed to fetch comments:', err);
+            setComments([]);
         } finally {
             setLoadingComments(false);
         }
@@ -59,90 +66,121 @@ export function ViewPost() {
         }
     }, []);
 
+    const fetchPost = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const res = await authFetch(`http://localhost:8080/post/id/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                setError(data.error || data.message || 'Failed to load post');
+                setPost(null);
+            } else {
+                console.log("Fetched post:", data);
+                setPost(data);
+            }
+        } catch (err: any) {
+            setError(err.message || 'An unexpected error occurred');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         if (!id) return;
-        const fetchPost = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const res = await authFetch(`http://localhost:8080/post/id/${id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
-                const data = await res.json();
-                if (!res.ok) {
-                    setError(data.error || data.message || 'Failed to load post');
-                    setPost(null);
-                } else {
-                    console.log("Fetched post:", data);
-                    setPost(data);
-                }
-            } catch (err: any) {
-                setError(err.message || 'An unexpected error occurred');
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchPost();
     }, [id]);
 
     return (
-        <div style={{
-            fontFamily: 'Inter, system-ui, sans-serif',
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-            width: '85vw',
-            overflow: 'hidden'
-        }}>
+        <div className="font-sans flex flex-col min-h-screen w-[85vw] overflow-hidden">
             <Header />
-            <div style={{ display: 'flex', flexGrow: 1, width: '100%', height: 'calc(100vh - 64px)' }}>
+            <div className="flex flex-grow w-full h-[calc(100vh-64px)]">
                 <Topics />
-                <main style={{
-                    flexGrow: 1,
-                    width: '100%',
-                    padding: '2rem 1rem 4rem 1rem',
-                    background: '#fff',
-                    height: '100%',
-                    overflowY: 'auto'
-                }}>
-                    {error && <div style={{ color: 'red' }}>{error}</div>}
-                    {!loading && !error && !post && <div style={{ color: '#6b7280' }}>No post found</div>}
+                <main className="flex-grow w-full p-8 bg-white h-full overflow-y-auto pb-16">
+                    {error && <div className="text-red-600 mb-4 font-medium">{error}</div>}
+                    {!loading && !error && !post && <div className="text-gray-500 italic">No post found</div>}
+
                     {post && (
-                        <article style={{ background: '#fff', borderRadius: 10, padding: 20, boxShadow: '0 6px 18px rgba(15,23,42,0.06)' }}>
-                            <div style={{ display: 'flex', gap: 20, marginBottom: 16, alignItems: 'flex-start' }}>
-                                <div style={{ fontSize: 13, color: '#6b7280' }}>{post.topic}</div>
-                                <div style={{ flex: 1 }}>
-                                    <h1 style={{ margin: 0 }}>{post.title}</h1>
-                                    <p style={{ color: '#6b7280', marginTop: 8, whiteSpace: 'pre-wrap', overflowWrap: 'break-word', wordBreak: 'break-word' }}>{post.content}</p>
+                        <article className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-4xl mx-auto">
+                            <div className="flex flex-col md:flex-row gap-6 mb-6 items-start">
+                                <div className="text-xs font-bold text-blue-600 uppercase tracking-widest">{post.topic}</div>
+                                <div className="flex-1">
+                                    <h1 className="text-3xl font-extrabold text-gray-900 mb-4">{post.title}</h1>
+                                    <p className="text-gray-600 leading-relaxed whitespace-pre-wrap break-words text-lg">
+                                        {post.content}
+                                    </p>
                                 </div>
                             </div>
-                            <div>
-                                <div style={{ fontSize: 12, color: '#9ca3af' }}>{post.CreatedAt ? new Date(post.CreatedAt).toLocaleString() : ''}</div>
-                                <div style={{ fontSize: 12, color: '#111823' }}>By {post.author || 'Unknown'}</div>
+
+                            <div className="flex flex-col gap-1 border-t border-gray-100 pt-4">
+                                <div className="text-xs text-gray-400">
+                                    {post.CreatedAt ? new Date(post.CreatedAt).toLocaleString() : ''}
+                                </div>
+                                <div className="text-sm font-medium text-gray-900">
+                                    By <span className="text-blue-600">{post.author || 'Unknown'}</span>
+                                </div>
                             </div>
-                            <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-start', gap: 8 }}>
-                                <Link to={`/topic/${encodeURIComponent(post.topic)}`} style={{ marginRight: 8 }}>← Back</Link>
-                                {username === post.author && (
-                                    <DeletePost postId={post.ID} />
+
+                            <div className="mt-6 flex items-center justify-between border-b border-gray-100 pb-6">
+                                <div className="flex gap-4 items-center">
+                                    <Link
+                                        to={`/topic/${encodeURIComponent(post.topic)}`}
+                                        className="text-gray-500 hover:text-blue-600 text-sm font-medium transition-colors"
+                                    >
+                                        ← Back to {post.topic}
+                                    </Link>
+
+                                    {username === post.author && (
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => setShowEdit(s => !s)}
+                                                className="px-4 py-1.5 rounded-lg text-sm font-semibold text-green-700 hover:bg-green-50 border border-green-200 transition-colors"
+                                            >
+                                                {showEdit ? 'Cancel Edit' : 'Edit'}
+                                            </button>
+                                            <DeletePost postId={post.ID} />
+                                        </div>
+                                    )}
+                                </div>
+                                <LikePost postId={post.ID} />
+                            </div>
+
+                            {showEdit && (
+                                <div className="mt-6 p-6 bg-gray-50 rounded-xl border border-gray-200">
+                                    <EditPost
+                                        post={post}
+                                        onUpdated={() => {
+                                            fetchPost();
+                                            setShowEdit(false);
+                                        }}
+                                        onCancel={() => setShowEdit(false)}
+                                    />
+                                </div>
+                            )}
+
+                            <div className="mt-8">
+                                <AddComment
+                                    postId={post.ID}
+                                    onCommentAdded={fetchComments}
+                                />
+                            </div>
+
+                            <div className="mt-12">
+                                {loadingComments ? (
+                                    <div className="text-gray-500 text-sm animate-pulse">Loading comments...</div>
+                                ) : (
+                                    <CommentsList
+                                        comments={comments}
+                                        currentUser={username}
+                                        onCommentDeleted={fetchComments}
+                                    />
                                 )}
                             </div>
-                            <LikePost postId={post.ID} />
-                            <AddComment
-                                postId={post.ID}
-                                onCommentAdded={fetchComments}
-                            />
-
-                            {loadingComments ? (
-                                <div style={{ color: '#6b7280', marginTop: 20 }}>Loading comments...</div>
-                            ) : (
-                                <CommentsList
-                                    comments={comments}
-                                    currentUser={username}
-                                    onCommentDeleted={fetchComments}
-                                />)}
                         </article>
                     )}
                 </main>

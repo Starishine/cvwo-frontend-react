@@ -49,22 +49,39 @@ export default function RegisterPage() {
     }
 
     return (
-        <div style={{ maxWidth: 420, margin: '2rem auto', padding: '1rem', border: '1px solid #eee' }}>
+        <div className="max-w-md mx-auto my-16 p-8 bg-white border border-gray-100 rounded-xl shadow-sm">
             <Logo />
-            <h2>Register</h2>
-            <form onSubmit={handleRegister}>
-                <div style={{ marginBottom: 8 }}>
-                    <label>Username</label><br />
-                    <input value={username} onChange={e => setUsername(e.target.value)} required />
-                </div>
-                <div style={{ marginBottom: 8 }}>
-                    <label>Password</label><br />
-                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-                </div>
-                {error && <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>}
-                <button type="submit" disabled={loading}>{loading ? 'Registering...' : 'Register'}</button>
+            <h2 className="text-2xl font-bold my-6">Register</h2>
+            <form onSubmit={handleRegister} className="space-y-4">
                 <div>
-                    Already have an account? <Link to="/">Sign In</Link>
+                    <label className="block text-sm font-medium mb-1">Username</label><br />
+                    <input
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium mb-1">Password</label><br />
+                    <input
+                        type="password"
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                {error && <div className="text-red-500 text-sm">{error}</div>}
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+                >
+                    {loading ? 'Signing in...' : 'Sign In'}
+                </button>
+                <div className="text-center text-sm text-gray-600 mt-4">
+                    Already have an account? <Link to="/" className="text-blue-600 hover:underline"> Sign In</Link>
                 </div>
             </form>
         </div>

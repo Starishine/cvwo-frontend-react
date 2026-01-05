@@ -19,14 +19,15 @@ export default function DeletePost({ postId }: { postId: string }) {
             }
         } catch (err: any) {
             console.error('An unexpected error occurred:', err.message || err);
-        } finally {
-            window.location.reload;
         }
     }
 
     return (
-        <>
-            <button onClick={() => { deletePost(postId) }}>Delete Post</button>
-        </>
-    )
+        <button
+            onClick={() => deletePost(postId)}
+            className="px-[10px] py-[6px] rounded-lg text-red-800 font-semibold hover:bg-red-50 border border-red-200 transition-colors"
+        >
+            Delete
+        </button>
+    );
 }

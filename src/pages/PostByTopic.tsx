@@ -42,83 +42,41 @@ export default function PostByTopic() {
     }, [decodedTopic]);
 
     return (
-        <div style={{
-            fontFamily: 'Inter, Roboto, system-ui, -apple-system, "Segoe UI", sans-serif',
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-            width: '85vw',
-            overflow: 'hidden'
-        }}>
+        <div className="font-sans flex flex-col min-h-screen w-[85vw] overflow-hidden">
             <Header />
-            <div style={{
-                display: 'flex',
-                flexGrow: 1,
-                width: '100%',
-                height: 'calc(100vh - 64px)'
-            }}>
+            <div className="flex flex-grow w-full h-[calc(100vh-64px)]">
                 <Topics />
 
-                <main style={{
-                    flexGrow: 1,
-                    width: '100%',
-                    padding: '2rem 1rem',
-                    background: '#fff',
-                    height: '100%',
-                    overflowY: 'auto'
-                }}>
-                    <h2>Posts on {decodedTopic}</h2>
+                <main className="flex-grow w-full p-8 bg-white h-full overflow-y-auto">
+                    <h2 className="text-2xl font-bold mb-6">Posts on {decodedTopic}</h2>
 
-                    {loading && <div style={{ color: '#6b7280' }}>Loading posts…</div>}
-                    {error && <div style={{ color: 'red' }}>{error}</div>}
+                    {loading && <div className="text-gray-500 italic">Loading posts…</div>}
+                    {error && <div className="text-red-600">{error}</div>}
 
                     {!loading && !error && posts.length === 0 && (
-                        <div style={{ color: '#6b7280' }}>There are no posts yet.</div>
+                        <div className="text-gray-500 italic">There are no posts yet.</div>
                     )}
-                    <section style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(700px, 1fr))',
-                        gap: 16,
-                        marginTop: 12,
-                        marginBottom: 32,
-                    }}>
+                    <section className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
                         {posts.map(p => (
-                            <article key={p.ID} style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                gap: 16,
-                                alignItems: 'flex-start',
-                                background: '#fff',
-                                borderRadius: 10,
-                                padding: 16,
-                                boxShadow: '0 6px 18px rgba(15,23,42,0.06)',
-                                minHeight: 120,
-                            }}>
-
-                                <div style={{ fontSize: 13, color: '#6b7280', marginBottom: 6 }}>{p.topic}</div>
-                                <div style={{ fontSize: 12, color: '#111823ff' }}>{p.CreatedAt ? new Date(p.CreatedAt).toLocaleDateString() : ''}</div>
-
-                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                                    <h3 style={{ margin: 0 }}>{p.title}</h3>
-                                    <p
-                                        style={{
-                                            margin: 0,
-                                            color: '#6b7280',
-                                            fontSize: 14,
-                                            whiteSpace: 'normal',
-                                            overflowWrap: 'break-word',
-                                            wordBreak: 'break-word'
-                                        }}
-                                    >
-                                        {p.content.length > 350 ? p.content.slice(0, 350) + '…' : p.content}
+                            <article key={p.ID} className="flex flex-col md:flex-row gap-4 bg-white rounded-xl 
+                            p-6 shadow-md border border-gray-50 min-h-[120px] hover:shadow-lg transition-shadow">
+                                <div className="flex-1 flex flex-col gap-2">
+                                    <div className="flex justify-between items-start">
+                                        <span className="text-xs font-bold text-blue-600 uppercase tracking-wide">{p.topic}</span>
+                                        <span className="text-xs text-gray-400">{p.CreatedAt ? new Date(p.CreatedAt).toLocaleDateString() : ''}</span>
+                                    </div>
+                                    <h3 className="text-lg font-bold text-gray-900">{p.title}</h3>
+                                    <p className="text-sm text-gray-500 line-clamp-3">
+                                        {p.content}
                                     </p>
-                                    <div style={{ fontSize: 12, color: '#111823' }}>By {p.author || 'Unknown'}</div>
-
-                                    <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-                                        <button onClick={() => viewPost(p.ID)} style={{
-                                            background: '#2563eb', color: '#fff', border: 'none',
-                                            padding: '6px 10px', borderRadius: 8, cursor: 'pointer'
-                                        }}>View More</button>
+                                    <div className="mt-auto pt-4 flex justify-between items-center">
+                                        <span className="text-xs text-gray-400">By {p.author || 'Unknown'}</span>
+                                        <button
+                                            onClick={() => viewPost(p.ID)}
+                                            className="bg-blue-600 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                                        >
+                                            View More
+                                        </button>
                                     </div>
                                 </div>
                             </article>

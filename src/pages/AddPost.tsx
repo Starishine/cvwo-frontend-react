@@ -79,45 +79,22 @@ export default function AddPost() {
 
     }
 
-    return (
-        <div style={{
-            fontFamily: 'Inter, Roboto, system-ui, -apple-system, "Segoe UI", sans-serif',
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-            width: '85vw',
-            overflow: 'hidden'
-        }}>
-            <Header />
-            <div style={{
-                display: 'flex',
-                flexGrow: 1,
-                width: '100%',
-                height: 'calc(100vh - 64px)'
-            }}>
-                <Topics />
+    const inputStyle = "w-full p-2.5 rounded-lg border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
+        + "focus:ring-blue-500/20 focus:border-blue-500 transition-all";
 
-                <main style={{
-                    flexGrow: 1,
-                    padding: '2rem 1rem',
-                    background: '#fff',
-                    height: '85%',
-                    overflowY: 'auto'
-                }}>
-                    <h2>Add a new post</h2>
-                    <p style={{ color: '#6b7280' }}>Logged in as {username || 'guest'}</p>
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 800 }}>
+    return (
+        <div className="font-sans flex flex-col min-h-screen w-[85vw] overflow-hidden">
+            <Header />
+            <div className="flex flex-grow w-full h-[calc(100vh-64px)]">
+                <Topics />
+                <main className="flex-grow p-8 bg-white h-full overflow-y-auto">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Add a new post</h2>
+                    <p className="text-gray-500 mb-6">Logged in as <span className="text-blue-600 font-medium">{username || 'guest'}</span></p>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-3xl">
                         <select
                             value={selectedTopic}
                             onChange={e => setSelectedTopic(e.target.value)}
-                            style={{
-                                width: '100%',
-                                padding: 10,
-                                borderRadius: 8,
-                                border: '1px solid #e5e7eb',
-                                fontFamily: 'inherit',
-                                fontSize: 14
-                            }}
+                            className={inputStyle}
                         >
                             <option value="">Select a topic...</option>
                             {defaultTopics.map(t => (
@@ -130,14 +107,7 @@ export default function AddPost() {
                                 type="text"
                                 placeholder="Enter custom topic"
                                 onChange={e => setCustomTopic(e.target.value)}
-                                style={{
-                                    width: '100%',
-                                    padding: 10,
-                                    borderRadius: 8,
-                                    border: '1px solid #e5e7eb',
-                                    marginTop: 8,
-                                    fontFamily: 'inherit'
-                                }}
+                                className={inputStyle}
                             />
                         )}
                         <input
@@ -145,29 +115,24 @@ export default function AddPost() {
                             value={title}
                             onChange={e => { setTitle(e.target.value) }} required
                             placeholder="Post Title"
-                            style={{ padding: 10, borderRadius: 8, border: '1px solid #e5e7eb' }}
+                            className={inputStyle}
                         />
                         <textarea
                             placeholder="Write your content here"
                             value={content}
                             onChange={e => { setContent(e.target.value) }} required
-                            style={{ padding: 10, borderRadius: 8, border: '1px solid #e5e7eb', minHeight: 200 }}
+                            className={`${inputStyle} min-h-[200px] resize-y`}
                         />
-                        <div style={{ display: 'flex', gap: 12 }}>
-                            <button type="submit" style={{
-                                background: '#2563eb', color: '#fff', border: 'none',
-                                padding: '10px 14px', borderRadius: 8, cursor: 'pointer'
-                            }}>
+                        <div className="flex gap-3 pt-2">
+                            <button type="submit"
+                                disabled={loading}
+                                className="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-blue-700
+                             disabled:bg-gray-400 transition-colors shadow-sm">
                                 {loading ? 'Adding…' : 'Add Post'}
                             </button>
-                            <a href="/dashboard" style={{
-                                display: 'inline-block',
-                                padding: '10px 14px',
-                                borderRadius: 8,
-                                border: '1px solid #e5e7eb',
-                                color: '#111827',
-                                textDecoration: 'none'
-                            }}>
+                            <a href="/dashboard"
+                                className="inline-block px-6 py-2.5 rounded-lg border border-gray-200 text-gray-700 
+                            text-sm font-medium hover:bg-gray-50 transition-colors">
                                 Cancel
                             </a>
                         </div>

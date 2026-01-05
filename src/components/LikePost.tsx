@@ -80,7 +80,11 @@ export default function LikePost({ postId, initialLikes = 0 }: LikePostProps) {
             <button onClick={handleLike} disabled={loading}>
                 {loading ? 'Updating…' : `❤️ ${likes}`}
             </button>
-            {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
+            {error &&
+                <div className="text-red-600 text-xs mb-2 bg-red-50 p-2 rounded border border-red-100">
+                    {error}
+                </div>
+            }
         </div>
     );
 }

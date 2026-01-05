@@ -97,44 +97,28 @@ export default function Search() {
     }
 
     return (
-        <div style={{ position: 'relative' }} ref={containerRef}>
-            <div>
+        <div className="relative" ref={containerRef}>
+            <div className="relative">
                 <input
                     type="text"
                     value={query}
                     onChange={handleInputChange}
                     placeholder="Search posts..."
-                    style={{ flex: 1, padding: 8 }}
+                    className="w-full pl-4 pr-10 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm 
+                    focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                 />
             </div>
             {showDropdown && (
-                <ul
-                    style={{
-                        listStyle: 'none',
-                        margin: 0,
-                        padding: 0,
-                        position: 'absolute',
-                        width: '100%',
-                        background: 'white',
-                        border: '1px solid #ddd',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                        maxHeight: 320,
-                        overflow: 'auto',
-                        zIndex: 1000
-                    }}
-                >
+                <ul className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg 
+                shadow-xl max-h-80 overflow-y-auto z-50 divide-y divide-gray-100">
                     {filteredPosts.map((p, idx) => (
                         <li
                             key={p.id ?? idx}
                             onClick={() => handleResultClick(p)}
-                            style={{
-                                padding: 12,
-                                borderBottom: '1px solid #eee',
-                                cursor: 'pointer'
-                            }}
+                            className="p-4 cursor-pointer hover:bg-blue-50 transition-colors"
                         >
-                            <div style={{ fontWeight: 600 }}>{p.title}</div>
-                            <div style={{ fontSize: 13, color: '#444', marginTop: 6 }}>
+                            <div className="font-semibold text-gray-900">{p.title}</div>
+                            <div className="text-xs text-gray-500 mt-1">
                                 {snippet(p.content, 100)}
                             </div>
                         </li>

@@ -30,42 +30,17 @@ export default function Topics() {
     }, []);
 
     return (
-        <aside style={{
-            width: 200,
-            background: '#f8fafc',
-            borderRight: '1px solid rgba(0,0,0,0.08)',
-            padding: '1rem 0',
-            overflowY: 'auto',
-            height: 'calc(100vh - 64px)',
-        }}>
-            <div style={{
-                padding: '0 1rem',
-                marginBottom: '1rem',
-                fontWeight: 700,
-                fontSize: 14
-            }}>
-                Topics
-            </div>
+        <aside className="w-[200px] bg-slate-50 border-r border-black/10 py-4 overflow-y-auto h-[calc(100vh-64px)]">
+            <div className="px-4 mb-4 font-bold text-sm tracking-wider">Topics</div>
 
             {loading && <div style={{ padding: '0 1rem' }}>Loading topics...</div>}
             {error && <div style={{ padding: '0 1rem', color: 'red' }}>{error}</div>}
 
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            <ul className="list-none p-0 m-0">
                 {topics.map((topic) => (
                     <li key={topic}>
-                        <Link
-                            to={`/topic/${encodeURIComponent(topic)}`}
-                            style={{
-                                display: 'block',
-                                width: '100%',
-                                textAlign: 'left',
-                                padding: '10px 1rem',
-                                textDecoration: 'none',
-                                color: '#6b7280',
-                                fontSize: 14,
-                                transition: 'background .15s',
-                            }}
-                        >
+                        <Link to={`/topic/${encodeURIComponent(topic)}`}
+                            className="block w-full text-left px-4 py-2.5 no-underline text-gray-500 text-sm transition-colors hover:bg-gray-200">
                             {topic}
                         </Link>
                     </li>

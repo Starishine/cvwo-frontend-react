@@ -22,35 +22,13 @@ export default function Dashboard() {
     }, []);
 
     return (
-        <div style={{
-            fontFamily: 'Inter, Roboto, system-ui, -apple-system, "Segoe UI", sans-serif',
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-            width: '85vw',
-            overflow: 'hidden',
-        }}>
+        <div className="font-sans flex flex-col min-h-screen w-[85vw] overflow-hidden">
             <Header />
-
-            {/* fixd full width */}
-            <div style={{
-                display: 'flex',
-                flexGrow: 1,
-                width: '100%',
-                height: 'calc(100vh - 64px)',
-            }}>
+            <div className="flex flex-grow w-full h-[calc(100vh-64px)]">
                 <Topics />
-
-                <main style={{
-                    flexGrow: 1,
-                    padding: '2rem 1rem',
-                    background: '#fff',
-                    alignItems: 'center',
-                    height: '100%',
-                    overflowY: 'auto'
-                }}>
-                    <h2>Welcome to readIT, {username}</h2>
-                    <p style={{ color: '#6b7280' }}>
+                <main className="flex-grow p-8 bg-white items-center h-full overflow-y-auto">
+                    <h2 className="text-2xl font-bold mb-4">Welcome to readIT, {username}</h2>
+                    <p className="text-gray-500" >
                         Use the Topics link to explore content.
                     </p>
                 </main>

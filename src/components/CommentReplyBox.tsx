@@ -47,21 +47,30 @@ export default function CommentReplyBox({ postId, parentId, onReplyAdded }: { po
     }
 
     return (
-        <div style={{ marginTop: 8 }}>
-            {error && <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>}
+        <div className="mt-2">
+            {error &&
+                <div className="text-red-600 text-xs mb-2 bg-red-50 p-2 rounded border border-red-100">
+                    {error}
+                </div>}
             <textarea
                 value={reply}
                 onChange={(e) => setReply(e.target.value)}
                 placeholder="Write your reply..."
-                style={{ width: '100%', minHeight: 80, padding: 8, borderRadius: 6, border: '1px solid #e5e7eb', fontFamily: 'inherit' }}
-            />
-            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                className="w-full min-h-[80px] p-2 border border-gray-200 rounded-lg 
+                text-sm font-sans focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
+
+            <div className="flex gap-2 mt-2">
                 <button
                     onClick={handleReply}
                     disabled={submitting || !reply.trim()}
-                    style={{ background: '#2563eb', color: '#fff', border: 'none', padding: '6px 10px', borderRadius: 6, cursor: 'pointer' }}
+                    className="bg-blue-600 text-white border-none px-3 py-1.5 rounded-md cursor-pointer text-sm font-medium hover:bg-blue-700 
+                    disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+
                 >{submitting ? 'Replying...' : 'Reply'}</button>
-                <button onClick={() => setReply('')} style={{ background: '#fff', border: '1px solid #e5e7eb', padding: '6px 10px', borderRadius: 6 }}>Cancel</button>
+                <button onClick={() => setReply('')}
+                    className="bg-white border border-gray-200 px-3 py-1.5 rounded-md text-sm font-medium
+                    text-gray-700 hover:bg-gray-50 transition-colors">
+                    Cancel</button>
             </div>
         </div>
     );
