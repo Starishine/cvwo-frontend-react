@@ -1,21 +1,13 @@
 export default function Logo() {
     return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: 8,
-                background: '#111827',
-                color: '#fff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 700,
-                fontSize: 18
-            }}>
+        <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-gray-900 text-white flex items-center 
+            justify-center font-bold text-lg">
                 R
             </div>
-            <div style={{ fontWeight: 700, fontSize: 18 }}>eadIT</div>
+            <div className="font-bold text-lg text-gray-900">
+                eadIT
+            </div>
         </div>
     )
 }

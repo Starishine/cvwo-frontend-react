@@ -64,20 +64,19 @@ export default function EditPost({
         }
     }
 
+    const inputStyle = "w-full p-2.5 rounded-lg border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
+        + "focus:ring-blue-500/20 focus:border-blue-500 transition-all";
     return (
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 800, marginTop: 16 }}>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-3xl mt-4">
+            {error && (
+                <div className="p-3 bg-red-50 border border-red-100 text-red-600 rounded-lg text-sm font-medium">
+                    {error}
+                </div>
+            )}
             <select
                 value={selectedTopic}
                 onChange={e => setSelectedTopic(e.target.value)}
-                style={{
-                    width: '100%',
-                    padding: 10,
-                    borderRadius: 8,
-                    border: '1px solid #e5e7eb',
-                    fontFamily: 'inherit',
-                    fontSize: 14
-                }}
+                className={inputStyle}
             >
                 <option value="">Select a topic...</option>
                 {defaultTopics.map(t => (
@@ -91,14 +90,7 @@ export default function EditPost({
                     placeholder="Enter custom topic"
                     value={customTopic}
                     onChange={e => setCustomTopic(e.target.value)}
-                    style={{
-                        width: '100%',
-                        padding: 10,
-                        borderRadius: 8,
-                        border: '1px solid #e5e7eb',
-                        marginTop: 8,
-                        fontFamily: 'inherit'
-                    }}
+                    className={inputStyle}
                 />
             )}
             <input
@@ -106,30 +98,27 @@ export default function EditPost({
                 value={updatedTitle}
                 onChange={e => setUpdatedTitle(e.target.value)} required
                 placeholder="Post Title"
-                style={{ padding: 10, borderRadius: 8, border: '1px solid #e5e7eb' }}
+                className={inputStyle}
             />
             <textarea
                 placeholder="Write your content here"
                 value={updatedContent}
                 onChange={e => setUpdatedContent(e.target.value)} required
-                style={{ padding: 10, borderRadius: 8, border: '1px solid #e5e7eb', minHeight: 200 }}
+                className={`${inputStyle} min-h-[200px] resize-y`}
             />
-            <div style={{ display: 'flex', gap: 12 }}>
-                <button type="submit" style={{
-                    background: '#2563eb', color: '#fff', border: 'none',
-                    padding: '10px 14px', borderRadius: 8, cursor: 'pointer'
-                }}>
+            <div className="flex gap-3 pt-2">
+                <button type="submit"
+                    disabled={loading}
+                    className="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-blue-700 
+                    disabled:bg-gray-400 transition-colors shadow-sm"
+                >
                     {loading ? 'Updating…' : 'Update Post'}
                 </button>
-                <button type="button" onClick={() => onCancel && onCancel()} style={{
-                    display: 'inline-block',
-                    padding: '10px 14px',
-                    borderRadius: 8,
-                    border: '1px solid #e5e7eb',
-                    color: '#111827',
-                    background: 'transparent',
-                    cursor: 'pointer'
-                }}>
+                <button type="button"
+                    onClick={() => onCancel && onCancel()}
+                    className="px-6 py-2.5 rounded-lg border border-gray-200 text-gray-700 text-sm 
+                    font-medium hover:bg-gray-50 transition-colors"
+                >
                     Cancel
                 </button>
             </div>
