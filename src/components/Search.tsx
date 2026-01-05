@@ -1,16 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import authFetch from '../utils/authFetch';
+import type { Post } from '../types/Post';
 
 export default function Search() {
-    interface Post {
-        id: number;
-        title: string;
-        content: string;
-    }
-
     const [query, setQuery] = useState('');
-    const [posts, setPosts] = useState<Array<any>>([]);
-    const [filteredPosts, setFilteredPosts] = useState<Array<any>>([]);
+    const [posts, setPosts] = useState<Array<Post>>([]);
+    const [filteredPosts, setFilteredPosts] = useState<Array<Post>>([]);
     const [showDropdown, setShowDropdown] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -37,7 +32,7 @@ export default function Search() {
             console.log(data);
 
             const normalied: Post[] = data.map((post: any) => ({
-                id: post.ID,
+                ID: post.ID,
                 title: post.title ?? '',
                 content: post.content ?? ''
             }));
@@ -67,6 +62,7 @@ export default function Search() {
         );
 
         setFilteredPosts(filtered);
+        console.log('Filtered Posts:', filtered);
         setShowDropdown(filtered.length > 0);
     };
 
@@ -87,7 +83,7 @@ export default function Search() {
 
     // when a search result is clicked, navigate to that post's page
     const handleResultClick = (post: Post) => {
-        window.location.href = `/post/id/${post.id}`;
+        window.location.href = `/post/id/${post.ID}`;
         setShowDropdown(false);
     }
 
@@ -113,7 +109,7 @@ export default function Search() {
                 shadow-xl max-h-80 overflow-y-auto z-50 divide-y divide-gray-100">
                     {filteredPosts.map((p, idx) => (
                         <li
-                            key={p.id ?? idx}
+                            key={p.ID ?? idx}
                             onClick={() => handleResultClick(p)}
                             className="p-4 cursor-pointer hover:bg-blue-50 transition-colors"
                         >

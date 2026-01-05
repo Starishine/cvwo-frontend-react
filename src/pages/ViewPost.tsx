@@ -9,12 +9,14 @@ import CommentsList from '../components/CommentList';
 import authFetch from '../utils/authFetch';
 import LikePost from '../components/LikePost';
 import EditPost from '../components/EditPost';
+import type { Post } from '../types/Post';
+import type { Comment } from '../types/Comment';
 
 export function ViewPost() {
     const { id } = useParams<{ id: string }>();
-    const [post, setPost] = useState<any>(null);
+    const [post, setPost] = useState<Post | null>(null);
     const [username, setUsername] = useState('');
-    const [comments, setComments] = useState<Array<any>>([]);
+    const [comments, setComments] = useState<Array<Comment>>([]);
     const [loading, setLoading] = useState(false);
     const [loadingComments, setLoadingComments] = useState(false);
     const [error, setError] = useState<string | null>(null);

@@ -2,14 +2,8 @@ import { useState } from "react";
 import CommentReplyBox from "./CommentReplyBox";
 import ReplyList from "./ReplyList";
 import DeleteComment from "./DeleteComment";
-interface Comment {
-    ID: number
-    post_id: number
-    comment: string
-    author: string
-    CreatedAt: string
-    parent_id: number
-}
+import type { Comment } from "../types/Comment";
+
 export default function CommentList({ comments, currentUser, onCommentDeleted }
     : { comments: Comment[], currentUser: string, onCommentDeleted: () => void }) {
 

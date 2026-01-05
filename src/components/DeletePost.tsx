@@ -1,8 +1,8 @@
 import authFetch from "../utils/authFetch";
 
-export default function DeletePost({ postId }: { postId: string }) {
+export default function DeletePost({ postId }: { postId: number }) {
 
-    async function deletePost(postId: string) {
+    async function deletePost(postId: number) {
         try {
             const res = await authFetch(`http://localhost:8080/deletepost/id/${postId}`, {
                 method: 'DELETE',

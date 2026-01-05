@@ -3,17 +3,17 @@ import { useParams } from 'react-router-dom';
 import Topics from '../components/Topics';
 import Header from '../components/Header';
 import authFetch from '../utils/authFetch';
-
+import type { Post } from '../types/Post';
 
 export default function PostByTopic() {
     const { topic } = useParams<{ topic: string }>();
     const decodedTopic = topic ? decodeURIComponent(topic) : '';
-    const [posts, setPosts] = useState<Array<any>>([]);
+    const [posts, setPosts] = useState<Array<Post>>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
 
-    function viewPost(postId: string) {
+    function viewPost(postId: number) {
         window.location.href = `/post/id/${postId}`;
     }
 
@@ -25,7 +25,7 @@ export default function PostByTopic() {
             try {
                 const res = await authFetch(`http://localhost:8080/post/topic/${encodeURIComponent(decodedTopic)}`);
                 const data = await res.json();
-
+                console.log(data)
                 if (!res.ok) {
                     setError(data.error || data.message || 'Failed to load posts');
                     setPosts([]);
@@ -40,6 +40,11 @@ export default function PostByTopic() {
         };
         fetchPosts();
     }, [decodedTopic]);
+
+    // This will log every time the post state changes
+    useEffect(() => {
+        console.log('Posts state has been updated:', posts);
+    }, [posts]);
 
     return (
         <div className="font-sans flex flex-col min-h-screen w-[85vw] overflow-hidden">

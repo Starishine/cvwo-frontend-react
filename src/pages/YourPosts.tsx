@@ -3,15 +3,15 @@ import { jwtDecode } from "jwt-decode";
 import Topics from "../components/Topics";
 import Header from "../components/Header";
 import authFetch from "../utils/authFetch";
-
+import type { Post } from "../types/Post";
 
 export default function YourPosts() {
     const [username, setUsername] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [posts, setPosts] = useState<Array<any>>([]);
+    const [posts, setPosts] = useState<Array<Post>>([]);
 
-    function viewPost(postId: string) {
+    function viewPost(postId: number) {
         window.location.href = `/post/id/${postId}`;
     }
 
