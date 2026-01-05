@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import authFetch from '../utils/authFetch';
-
-interface LikePostProps {
-    postId: string;
-    initialLikes?: number;
-}
+import type { LikePostProps } from '../types/LikePostProp';
 
 export default function LikePost({ postId, initialLikes = 0 }: LikePostProps) {
     const [likes, setLikes] = useState<number>(initialLikes);

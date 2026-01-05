@@ -2,7 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
 import authFetch from "../utils/authFetch";
 
-export default function AddComment({ postId, onCommentAdded }: { postId: string, onCommentAdded: () => void }) {
+export default function AddComment({ postId, onCommentAdded }: { postId: number, onCommentAdded: () => void }) {
     const [comment, setComment] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);

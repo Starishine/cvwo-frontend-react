@@ -2,9 +2,10 @@ import { useEffect } from "react";
 import authFetch from "../utils/authFetch";
 import { useState } from "react";
 import DeleteComment from "./DeleteComment";
+import type { Comment } from "../types/Comment";
 
 export default function ReplyList({ currentUser, parentId, refresh }: { currentUser: string, parentId: number, refresh: number }) {
-    const [replies, setReplies] = useState<Array<any>>([]);
+    const [replies, setReplies] = useState<Array<Comment>>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -45,10 +46,10 @@ export default function ReplyList({ currentUser, parentId, refresh }: { currentU
             )}
             <div className="flex flex-col gap-2 mt-2">
                 {replies.map((r) => {
-                    const key = r.ID ?? r.id ?? r._id ?? Math.random();
-                    const author = r.author ?? r.Author ?? 'Unknown';
-                    const content = r.comment ?? r.content ?? '';
-                    const time = r.CreatedAt ?? r.created_at ?? r.created ?? null;
+                    const key = r.ID;
+                    const author = r.author;
+                    const content = r.comment;
+                    const time = r.CreatedAt;
                     const initial = author ? String(author)[0].toUpperCase() : '?';
 
                     return (
