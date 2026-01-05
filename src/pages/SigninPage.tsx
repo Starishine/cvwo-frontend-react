@@ -17,7 +17,7 @@ export default function SigninPage() {
         // no access token, try to refresh
         if (!access_token) {
             try {
-                const res = await fetch('http://localhost:8080/auth/refresh', {
+                const res = await fetch('/auth/refresh', {
                     method: 'POST',
                     credentials: 'include',
                 });
@@ -49,7 +49,7 @@ export default function SigninPage() {
             return;
         }
         try {
-            const response = await fetch('http://localhost:8080/auth/login', {
+            const response = await fetch('/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

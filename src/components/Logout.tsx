@@ -4,7 +4,7 @@ export default function Logout() {
         try {
             sessionStorage.removeItem('access_token');
 
-            const res = await fetch('http://localhost:8080/auth/logout', {
+            const res = await fetch('/auth/logout', {
                 method: 'POST',
                 credentials: 'include'
             });

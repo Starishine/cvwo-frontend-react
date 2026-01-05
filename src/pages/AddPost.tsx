@@ -51,7 +51,7 @@ export default function AddPost() {
         }
 
         try {
-            const response = await authFetch('http://localhost:8080/post', {
+            const response = await authFetch('/post', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

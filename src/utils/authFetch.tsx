@@ -1,7 +1,9 @@
 export default async function authFetch(url: string, options: RequestInit = {}) {
+
+    const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
     let access_token = sessionStorage.getItem('access_token');
 
-    let response = await fetch(url, {
+    let response = await fetch(`${BASE_URL}${url}`, {
         ...options,
         credentials: 'include',
         headers: {
@@ -12,7 +14,7 @@ export default async function authFetch(url: string, options: RequestInit = {}) 
 
     if (response.status === 401) {
         // try refreshing token
-        const refreshResponse = await fetch('http://localhost:8080/auth/refresh', {
+        const refreshResponse = await fetch(`${BASE_URL}/auth/refresh`, {
             method: 'POST',
             credentials: 'include'
         });
@@ -27,7 +29,7 @@ export default async function authFetch(url: string, options: RequestInit = {}) 
         // retry original request with new token
         access_token = refreshData.access_token;
 
-        response = await fetch(url, {
+        response = await fetch(`${BASE_URL}${url}`, {
             ...options,
             credentials: 'include',
             headers: {

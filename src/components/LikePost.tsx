@@ -14,7 +14,7 @@ export default function LikePost({ postId, initialLikes = 0 }: LikePostProps) {
 
     const fetchLikes = async () => {
         try {
-            const res = await authFetch(`http://localhost:8080/getAllLikes/${postId}`, {
+            const res = await authFetch(`/getAllLikes/${postId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ export default function LikePost({ postId, initialLikes = 0 }: LikePostProps) {
         setError(null);
 
         try {
-            const res = await authFetch(`http://localhost:8080/like/${postId}`, {
+            const res = await authFetch(`/like/${postId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

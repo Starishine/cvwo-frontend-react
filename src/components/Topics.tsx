@@ -10,7 +10,7 @@ export default function Topics() {
     useEffect(() => {
         const fetchTopics = async () => {
             try {
-                const res = await authFetch(`http://localhost:8080/post/topics`);
+                const res = await authFetch(`/post/topics`);
                 const data = await res.json();
 
                 if (!res.ok) {

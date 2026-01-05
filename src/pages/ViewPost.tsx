@@ -27,7 +27,7 @@ export function ViewPost() {
         if (!id) return;
         setLoadingComments(true);
         try {
-            const res = await authFetch(`http://localhost:8080/comments/${id}`, {
+            const res = await authFetch(`/comments/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export function ViewPost() {
         setLoading(true);
         setError(null);
         try {
-            const res = await authFetch(`http://localhost:8080/post/id/${id}`, {
+            const res = await authFetch(`/post/id/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

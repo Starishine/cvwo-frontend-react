@@ -42,7 +42,7 @@ export default function EditPost({
 
         setLoading(true);
         try {
-            const res = await authFetch(`http://localhost:8080/update/${post.ID}`, {
+            const res = await authFetch(`/update/${post.ID}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

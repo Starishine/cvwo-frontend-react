@@ -11,7 +11,7 @@ export default function ReplyList({ currentUser, parentId, refresh }: { currentU
 
     const fetchReplies = async () => {
         try {
-            const res = await authFetch(`http://localhost:8080/comments/replies/${parentId}`, {
+            const res = await authFetch(`/comments/replies/${parentId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

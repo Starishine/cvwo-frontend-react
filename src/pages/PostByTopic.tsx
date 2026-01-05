@@ -23,7 +23,7 @@ export default function PostByTopic() {
             setLoading(true);
             setError(null);
             try {
-                const res = await authFetch(`http://localhost:8080/post/topic/${encodeURIComponent(decodedTopic)}`);
+                const res = await authFetch(`/post/topic/${encodeURIComponent(decodedTopic)}`);
                 const data = await res.json();
                 console.log(data)
                 if (!res.ok) {

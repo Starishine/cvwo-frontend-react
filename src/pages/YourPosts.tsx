@@ -39,7 +39,7 @@ export default function YourPosts() {
         if (!username) return;
         const fetchPosts = async () => {
             try {
-                const res = await authFetch(`http://localhost:8080/post/${username}`, {
+                const res = await authFetch(`/post/${username}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

@@ -4,7 +4,7 @@ export default function DeletePost({ postId }: { postId: number }) {
 
     async function deletePost(postId: number) {
         try {
-            const res = await authFetch(`http://localhost:8080/deletepost/id/${postId}`, {
+            const res = await authFetch(`deletepost/id/${postId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

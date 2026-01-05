@@ -39,7 +39,7 @@ export default function AddComment({ postId, onCommentAdded }: { postId: number,
         setError(null);
 
         try {
-            const res = await authFetch('http://localhost:8080/comment', {
+            const res = await authFetch('/comment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

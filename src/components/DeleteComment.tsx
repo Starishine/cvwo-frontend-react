@@ -10,7 +10,7 @@ export default function DeleteComment({ commentId, onCommentDeleted }: { comment
         setDeletingId(commentId);
         setError(null);
         try {
-            const res = await authFetch(`http://localhost:8080/deletecomment/id/${commentId}`, {
+            const res = await authFetch(`/deletecomment/id/${commentId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

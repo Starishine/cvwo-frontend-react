@@ -16,7 +16,7 @@ export default function Search() {
 
     const fetchPostContents = async () => {
         try {
-            const fetchPosts = await authFetch('http://localhost:8080/getallposts', {
+            const fetchPosts = await authFetch('/getallposts', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

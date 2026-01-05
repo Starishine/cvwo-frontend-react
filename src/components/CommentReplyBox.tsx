@@ -27,7 +27,7 @@ export default function CommentReplyBox({ postId, parentId, onReplyAdded }: { po
         setSubmitting(true);
         setError(null);
         try {
-            const res = await authFetch('http://localhost:8080/comment', {
+            const res = await authFetch('/comment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ post_id: postId, comment: reply.trim(), author: username, parent_id: parentId })
