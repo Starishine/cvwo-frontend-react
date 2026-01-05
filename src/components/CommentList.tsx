@@ -7,7 +7,7 @@ import type { Comment } from "../types/Comment";
 export default function CommentList({ comments, currentUser, onCommentDeleted }
     : { comments: Comment[], currentUser: string, onCommentDeleted: () => void }) {
 
-    const [error, setError] = useState<string | null>(null);
+    const [error] = useState<string | null>(null);
     const [openReplyFor, setOpenReplyFor] = useState<number | null>(null); // ID of comment to open reply box for
     const [replyRefresh, setReplyRefresh] = useState<number>(0); // to trigger re-render on reply added
 

@@ -31,6 +31,7 @@ export default function DeleteComment({ commentId, onCommentDeleted }: { comment
     const isDeleting = deletingId === commentId;
     return (
         <div className="flex flex-col items-end">
+            {error && <div className="text-red-600">{error}</div>}
             <button
                 onClick={() => handleDelete(commentId)}
                 disabled={isDeleting}

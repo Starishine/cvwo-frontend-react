@@ -89,6 +89,7 @@ export default function AddPost() {
                 <Topics />
                 <main className="flex-grow p-8 bg-white h-full overflow-y-auto">
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">Add a new post</h2>
+                    {error && <div className="text-red-600">{error}</div>}
                     <p className="text-gray-500 mb-6">Logged in as <span className="text-blue-600 font-medium">{username || 'guest'}</span></p>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-3xl">
                         <select

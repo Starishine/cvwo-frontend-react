@@ -6,8 +6,8 @@ import type { Comment } from "../types/Comment";
 
 export default function ReplyList({ currentUser, parentId, refresh }: { currentUser: string, parentId: number, refresh: number }) {
     const [replies, setReplies] = useState<Array<Comment>>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [loading] = useState(false);
+    const [error] = useState<string | null>(null);
 
     const fetchReplies = async () => {
         try {
