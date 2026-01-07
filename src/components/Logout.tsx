@@ -4,7 +4,7 @@ export default function Logout() {
         try {
             sessionStorage.removeItem('access_token');
 
-            const res = await fetch('/auth/logout', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
                 method: 'POST',
                 credentials: 'include'
             });

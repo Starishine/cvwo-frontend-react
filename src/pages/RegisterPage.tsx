@@ -21,7 +21,7 @@ export default function RegisterPage() {
         }
 
         try {
-            const response = await fetch('/auth/register', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -34,10 +34,10 @@ export default function RegisterPage() {
             if (!response.ok) {
                 throw new Error(data.message || 'Registration failed');
             } else {
-                alert('Registration successful!');
+                alert('Registration successful! Pls log in');
                 setUsername('');
                 setPassword('');
-                window.location.href = '/dashboard';
+                window.location.href = '/';
             }
         }
         catch (err: any) {

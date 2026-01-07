@@ -17,7 +17,7 @@ export default function SigninPage() {
         // no access token, try to refresh
         if (!access_token) {
             try {
-                const res = await fetch('/auth/refresh', {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
                     method: 'POST',
                     credentials: 'include',
                 });
@@ -49,7 +49,7 @@ export default function SigninPage() {
             return;
         }
         try {
-            const response = await fetch('/auth/login', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
