@@ -40,7 +40,8 @@ export default function Topics() {
                 {topics.map((topic) => (
                     <li key={topic}>
                         <Link to={`/topic/${encodeURIComponent(topic)}`}
-                            className="block w-full text-left px-4 py-2.5 no-underline text-gray-500 text-sm transition-colors hover:bg-gray-200">
+                            className="block w-full text-left px-4 py-2.5 no-underline text-gray-500 text-sm 
+                            transition-colors hover:bg-gray-200">
                             {topic}
                         </Link>
                     </li>

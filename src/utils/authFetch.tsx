@@ -1,3 +1,5 @@
+// Handles authenticated fetch requests with automatic token refresh
+
 export default async function authFetch(url: string, options: RequestInit = {}) {
 
     const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
@@ -12,6 +14,7 @@ export default async function authFetch(url: string, options: RequestInit = {}) 
         }
     });
 
+    // if unauthorized, try to refresh token
     if (response.status === 401) {
         // try refreshing token
         const refreshResponse = await fetch(`${BASE_URL}/auth/refresh`, {

@@ -38,11 +38,14 @@ export default function SigninPage() {
             window.location.href = '/dashboard';
         }
     }
+
+    // handle sign in form submission using react form event type 
     async function handleSignin(e: React.FormEvent) {
         e.preventDefault();
         setLoading(true);
         setError(null);
 
+        // check for missing fields
         if (!username.trim() || !password.trim()) {
             setError('Username and password cannot be empty.');
             setLoading(false);
@@ -65,7 +68,7 @@ export default function SigninPage() {
                 setError(data.error || data.message);
             }
             else {
-                localStorage.removeItem('logged_out');
+                // set access token in session storage
                 sessionStorage.setItem('access_token', data.access_token);
                 alert('Login successful!')
                 window.location.href = '/dashboard';

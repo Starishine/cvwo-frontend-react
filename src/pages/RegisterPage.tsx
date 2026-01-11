@@ -9,6 +9,7 @@ export default function RegisterPage() {
     const [error, setError] = useState<string | null>(null);
 
 
+    // handle register form submission using react form event type 
     async function handleRegister(e: FormEvent) {
         e.preventDefault();
         setLoading(true);
@@ -78,7 +79,7 @@ export default function RegisterPage() {
                     disabled={loading}
                     className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
                 >
-                    {loading ? 'Signing in...' : 'Sign In'}
+                    {loading ? 'Registering...' : 'Register'}
                 </button>
                 <div className="text-center text-sm text-gray-600 mt-4">
                     Already have an account? <Link to="/" className="text-blue-600 hover:underline"> Sign In</Link>

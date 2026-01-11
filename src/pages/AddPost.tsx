@@ -31,7 +31,6 @@ export default function AddPost() {
         } catch (error) {
             console.error("Failed to decode token", error);
             window.location.href = '/';
-            localStorage.removeItem('token');
         }
 
     }, []);
@@ -68,7 +67,7 @@ export default function AddPost() {
                 setCustomTopic('');
                 setTitle('');
                 setContent('');
-                window.location.href = '/dashboard';
+                window.location.href = `/topic/${actualTopic.trim()}`;
             }
         } catch (error: any) {
             setError(error.message);

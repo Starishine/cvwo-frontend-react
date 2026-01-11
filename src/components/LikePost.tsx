@@ -12,6 +12,7 @@ export default function LikePost({ postId, initialLikes = 0 }: LikePostProps) {
         fetchLikes();
     }, []);
 
+    // fetch current likes from backend and set state of initialLikes
     const fetchLikes = async () => {
         try {
             const res = await authFetch(`/getAllLikes/${postId}`, {
@@ -36,6 +37,7 @@ export default function LikePost({ postId, initialLikes = 0 }: LikePostProps) {
 
     }
 
+    // handle like button click
     const handleLike = async () => {
         if (loading) return;
 
