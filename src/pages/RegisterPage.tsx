@@ -42,6 +42,7 @@ export default function RegisterPage() {
                 } else {
                     setError(data.error || 'Registration failed');
                 }
+                return;
             } else {
                 alert('Registration successful! Pls log in');
                 setUsername('');
