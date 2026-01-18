@@ -31,9 +31,17 @@ export default function RegisterPage() {
             });
 
             const data = await response.json();
+            console.log(response);
 
             if (!response.ok) {
-                throw new Error(data.message || 'Registration failed');
+                // throw error with message from response status 
+                if (response.status === 409) {
+                    setError('Username already exists. Please choose another one.');
+                } else if (response.status === 400) {
+                    setError('Invalid input. Please check your data and try again.');
+                } else {
+                    setError(data.error || 'Registration failed');
+                }
             } else {
                 alert('Registration successful! Pls log in');
                 setUsername('');
