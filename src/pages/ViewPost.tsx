@@ -111,11 +111,13 @@ export function ViewPost() {
                         <article className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-4xl mx-auto">
                             <div className="flex flex-col md:flex-row gap-6 mb-6 items-start">
                                 <div className="text-xs font-bold text-blue-600 uppercase tracking-widest">{post.topic}</div>
-                                <div className="flex-1">
+                                <div className="p-8 flex-1">
                                     <h1 className="text-3xl font-extrabold text-gray-900 mb-4">{post.title}</h1>
-                                    <p className="text-gray-600 leading-relaxed whitespace-pre-wrap break-words text-lg">
-                                        {post.content}
-                                    </p>
+                                    <div className="my-6" >
+                                        <p className="text-gray-600 leading-relaxed whitespace-pre-wrap break-words text-lg">
+                                            {post.content}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
