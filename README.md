@@ -34,3 +34,6 @@ User Manual -> https://docs.google.com/document/d/1qcohUkzilBTzwYY3dD9NVENnuuhdz
     ```
 ## For backend setup
 Please refer to the [backend repository’s README](https://github.com/Starishine/cvwo-backend-go) for further instructions.
+
+## AI Declaration 
+- Used Gemini to generate sample post title and content for demonstration purpose
